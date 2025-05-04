@@ -1,0 +1,97 @@
+package com.sanvalero.aa2pmdm.screen;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTable;
+import com.sanvalero.aa2pmdm.Main;
+// import com.sanvalero.aa2pmdm.manager.R;
+
+public class SplashScreen implements Screen {
+
+    private Main game;
+
+    private Stage stage;
+
+    private boolean splashDone = false;
+
+    public SplashScreen(Main game) {
+        this.game = game;
+
+        stage = new Stage();
+    }
+
+    @Override
+    public void show() {
+        if (!VisUI.isLoaded())
+            VisUI.load();
+
+        VisTable table = new VisTable(true);
+        table.setFillParent(true);
+        table.center();
+        stage.addActor(table);
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Super Lobster.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 72;
+        BitmapFont titleFont = generator.generateFont(parameter);
+        generator.dispose();
+
+        VisLabel title = new VisLabel("AA2 PMDM", new LabelStyle(titleFont, Color.WHITE));
+
+        table.row();
+        table.add(title).center();
+
+        // R.loadAllResources();
+    }
+
+    @Override
+    public void render(float v) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_CLEAR_VALUE);
+
+        stage.act();
+        stage.draw();
+
+        // if (R.update()) {
+        //     if (splashDone) {
+        //         game.setScreen(new MainMenuScreen(game));
+        //     }
+        // }
+        if (splashDone) { // TODO: Change when R.update() is implemented
+            // game.setScreen(new MainMenuScreen(game));
+        }
+    }
+
+    @Override
+    public void resize(int i, int i1) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
+}
