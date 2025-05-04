@@ -17,10 +17,10 @@ import com.sanvalero.aa2pmdm.Main;
 public class SplashScreen implements Screen {
 
     private Main game;
-
     private Stage stage;
-
     private boolean splashDone = false;
+
+    private float timer = 1f;   // TODO: Delete this when R.update() is implemented
 
     public SplashScreen(Main game) {
         this.game = game;
@@ -53,8 +53,8 @@ public class SplashScreen implements Screen {
     }
 
     @Override
-    public void render(float v) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0.2f, 0.537f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_CLEAR_VALUE);
 
         stage.act();
@@ -66,7 +66,12 @@ public class SplashScreen implements Screen {
         //     }
         // }
         if (splashDone) { // TODO: Change when R.update() is implemented
-            // game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new MainMenuScreen(game));
+        }
+
+        timer -= delta;
+        if (timer <= 0) {
+            splashDone = true;
         }
     }
 
