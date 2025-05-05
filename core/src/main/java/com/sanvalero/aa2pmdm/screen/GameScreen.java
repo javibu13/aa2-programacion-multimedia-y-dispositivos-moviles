@@ -29,7 +29,7 @@ public class GameScreen implements Screen {
     public void show() {
         game.pause = false;
         if (ConfigurationManager.isSoundEnabled()) {
-            R.getMusic("music").play();
+            // R.getMusic("music").play();
         }
     }
 

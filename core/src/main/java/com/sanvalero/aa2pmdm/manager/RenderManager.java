@@ -1,5 +1,7 @@
 package com.sanvalero.aa2pmdm.manager;
 
+import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,11 +20,13 @@ public class RenderManager {
     public RenderManager(LogicManager logicManager, TiledMap levelMap) {
         this.logicManager = logicManager;
 
-        this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap, batch);
+        this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap);
         this.batch = mapRenderer.getBatch();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
+        camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
+        camera.update();
+        
         this.font = new BitmapFont();
     }
 
