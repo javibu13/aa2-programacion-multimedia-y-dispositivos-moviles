@@ -19,6 +19,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.sanvalero.aa2pmdm.Main;
 // import com.sanvalero.aa2pmdm.manager.R;
+import com.sanvalero.aa2pmdm.manager.R;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
 import com.sanvalero.aa2pmdm.util.WindowSize;
@@ -91,6 +92,7 @@ public class ConfigurationScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
+                R.dispose();
                 game.setScreen(backScreen);
             }
         });
