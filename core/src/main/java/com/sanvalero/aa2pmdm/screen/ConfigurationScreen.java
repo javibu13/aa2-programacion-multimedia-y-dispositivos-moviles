@@ -1,6 +1,5 @@
 package com.sanvalero.aa2pmdm.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
@@ -14,22 +13,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.sanvalero.aa2pmdm.Main;
-import com.sanvalero.aa2pmdm.util.WindowSize;
+// import com.sanvalero.aa2pmdm.manager.R;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
+import com.sanvalero.aa2pmdm.util.WindowSize;
 
-public class MainMenuScreen implements Screen {
+public class ConfigurationScreen implements Screen {
 
-    private Stage stage;
-    private Preferences prefs;
     private Main game;
+    private Stage stage;
+    private VisTable table;
+    private Preferences prefs;
+    private Screen backScreen;
 
-    public MainMenuScreen(Main game) {
+    public ConfigurationScreen(Main game, Screen backScreen) {
         this.game = game;
+        this.backScreen = backScreen;
+        loadPreferences();
+    }
+
+    private void loadPreferences() {
         prefs = Gdx.app.getPreferences(GAME_NAME);
     }
 
@@ -39,7 +47,7 @@ public class MainMenuScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        VisTable table = new VisTable(true);
+        table = new VisTable(true);
         table.setFillParent(true);
         table.center();
         stage.addActor(table);
@@ -49,43 +57,52 @@ public class MainMenuScreen implements Screen {
         parameter.size = 72;
         BitmapFont titleFont = generator.generateFont(parameter);
         generator.dispose();
-        VisLabel title = new VisLabel(GAME_NAME, new LabelStyle(titleFont, Color.WHITE));
+        VisLabel title = new VisLabel("Settings", new LabelStyle(titleFont, Color.WHITE));
 
-        VisTextButton playButton = new VisTextButton("Play");
-        playButton.addListener(new ClickListener() {
+        VisCheckBox checkSound = new VisCheckBox("Sound");
+        checkSound.setChecked(prefs.getBoolean("sound", true));
+        checkSound.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                dispose();
-                game.setScreen(new GameScreen(game));
+                prefs.putBoolean("sound", checkSound.isChecked());
+                prefs.flush();
+            }
+        });
+        
+        VisCheckBox checkFullscreen = new VisCheckBox("Fullscreen");
+        checkFullscreen.setChecked(prefs.getBoolean("fullscreen", false));
+        checkFullscreen.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                prefs.putBoolean("fullscreen", checkFullscreen.isChecked());
+                prefs.flush();
+                // Toggle fullscreen mode
+                if (checkFullscreen.isChecked()) {
+                    WindowSize.setFullScreen(stage);
+                } else {
+                    WindowSize.setWindowed(stage);
+                }
+                loadStage();
             }
         });
 
-        VisTextButton configButton = new VisTextButton("Settings");
-        configButton.addListener(new ClickListener() {
+        VisTextButton backButton = new VisTextButton("BACK");
+        backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new ConfigurationScreen(game, game.getScreen()));
-            }
-        });
-
-        VisTextButton quitButton = new VisTextButton("Exit");
-        quitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                dispose();
-                Gdx.app.exit();
+                game.setScreen(backScreen);
             }
         });
 
         table.row();
         table.add(title).center();
         table.row();
-        table.add(playButton).center();
+        table.add(checkSound).center();
         table.row();
-        table.add(configButton).center();
+        table.add(checkFullscreen).center();
         table.row();
-        table.add(quitButton).center();
+        table.add(backButton).center();
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -93,14 +110,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         loadStage();
-        if (prefs.getBoolean("fullscreen", false)) {
-            WindowSize.setFullScreen(stage);
-        }
-        // FIXME: Initial window size is not set correctly when MainMenuScreen is shown at the beginning
-        //  else {
-        //     System.out.println("Windowed mode: " + prefs.getInteger("windowWidth", 640) + "x" + prefs.getInteger("windowHeight", 360));
-        //     WindowSize.resize(stage, prefs.getInteger("windowWidth", 640), prefs.getInteger("windowHeight", 360));
-        // }
     }
 
     @Override

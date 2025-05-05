@@ -14,9 +14,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.sanvalero.aa2pmdm.Main;
 // import com.sanvalero.aa2pmdm.manager.R;
 
-import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
-
-public class SplashScreen implements Screen {
+public class GameScreen implements Screen {
 
     private Main game;
     private Stage stage;
@@ -24,7 +22,7 @@ public class SplashScreen implements Screen {
 
     private float timer = 1f;   // TODO: Delete this when R.update() is implemented
 
-    public SplashScreen(Main game) {
+    public GameScreen(Main game) {
         this.game = game;
 
         stage = new Stage();
@@ -46,7 +44,7 @@ public class SplashScreen implements Screen {
         BitmapFont titleFont = generator.generateFont(parameter);
         generator.dispose();
 
-        VisLabel title = new VisLabel(GAME_NAME, new LabelStyle(titleFont, Color.WHITE));
+        VisLabel title = new VisLabel("AA2 PMDM", new LabelStyle(titleFont, Color.WHITE));
 
         table.row();
         table.add(title).center();
