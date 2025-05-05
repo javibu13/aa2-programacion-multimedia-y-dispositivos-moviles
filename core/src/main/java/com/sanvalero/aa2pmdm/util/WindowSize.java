@@ -1,7 +1,6 @@
 package com.sanvalero.aa2pmdm.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
