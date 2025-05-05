@@ -86,7 +86,7 @@ public class ConfigurationScreen implements Screen {
             }
         });
 
-        VisTextButton backButton = new VisTextButton("BACK");
+        VisTextButton backButton = new VisTextButton("Return");
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

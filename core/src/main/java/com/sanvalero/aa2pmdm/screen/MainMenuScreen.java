@@ -69,7 +69,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        VisTextButton quitButton = new VisTextButton("Exit");
+        VisTextButton quitButton = new VisTextButton("Exit Game");
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
