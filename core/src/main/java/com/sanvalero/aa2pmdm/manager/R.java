@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 public class R {
-    private static String TEXTURE_ATLAS = "aa2pmdm.atlas";
+    private static String TEXTURE_ATLAS = "atlas/aa2pmdm.atlas";
     private static String SOUNDS = "sounds";
     private static String MUSIC = "music";
 
@@ -21,7 +21,7 @@ public class R {
     }
 
     public static void loadAllResources() {
-        // assetManager.load(TEXTURE_ATLAS, TextureAtlas.class); // TODO: Load the texture atlas when existing
+        assetManager.load(TEXTURE_ATLAS, TextureAtlas.class);
         loadAllSoundsAndMusic(); 
     }
 

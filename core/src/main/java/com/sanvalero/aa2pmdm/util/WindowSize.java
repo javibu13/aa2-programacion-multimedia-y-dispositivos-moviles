@@ -27,8 +27,8 @@ public class WindowSize {
     }
 
     public static void setWindowed(Stage stage) {
-        int width = Gdx.app.getPreferences(GAME_NAME).getInteger("windowWidth", 640);
-        int height = Gdx.app.getPreferences(GAME_NAME).getInteger("windowHeight", 360);
+        int width = Gdx.app.getPreferences(GAME_NAME).getInteger("windowWidth", 1280);
+        int height = Gdx.app.getPreferences(GAME_NAME).getInteger("windowHeight", 720);
         setWindowed(stage, width, height);
     }
 }

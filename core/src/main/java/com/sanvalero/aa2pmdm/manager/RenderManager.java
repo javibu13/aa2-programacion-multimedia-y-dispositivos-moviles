@@ -38,7 +38,7 @@ public class RenderManager {
         mapRenderer.render();
 
         batch.begin();
-        // batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getX(), logicManager.player.getY());
+        batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         // ...
 
         // Draw UI elements

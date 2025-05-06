@@ -19,13 +19,13 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.util.WindowSize;
 
-public class Pause implements Screen {
+public class PauseScreen implements Screen {
 
     private Main game;
     private Screen backScreen;
     private Stage stage;
 
-    public Pause(Main game, Screen backScreen) {
+    public PauseScreen(Main game, Screen backScreen) {
         this.game = game;
         this.backScreen = backScreen;
     }
