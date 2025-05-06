@@ -7,9 +7,11 @@ import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_SPEED;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.sanvalero.aa2pmdm.manager.LevelManager;
 import com.sanvalero.aa2pmdm.manager.R;
 
 import lombok.Data;
@@ -110,6 +112,26 @@ public class Player extends Character {
     }
 
     public void checkGroundCollisions() {
-        
+        // Check if the player is colliding with ground and wall tiles to prevent going through them
+        Array<Rectangle> groundTileCollisionShapesArround = LevelManager.getGroundTiles(position);
+        for (Rectangle tile : groundTileCollisionShapesArround) {
+            if (collisionShape.overlaps(tile)) {
+                // Check if the player is falling and colliding with the ground
+                if (velocity.y < 0) {
+                    position.y = tile.getY() + tile.getHeight();
+                    collisionShape.setPosition(position.x, position.y);
+                    velocity.y = 0;
+                    isGrounded = true;
+                } else if (velocity.x > 0 && collisionShape.getX() + collisionShape.getWidth() > tile.getX()) {
+                    position.x = tile.getX() - collisionShape.getWidth();
+                    collisionShape.setPosition(position.x, position.y);
+                    velocity.x = 0;
+                } else if (velocity.x < 0 && collisionShape.getX() < tile.getX() + tile.getWidth()) {
+                    position.x = tile.getX() + tile.getWidth();
+                    collisionShape.setPosition(position.x, position.y);
+                    velocity.x = 0;
+                }
+            }
+        }
     }
 }

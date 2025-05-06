@@ -1,5 +1,7 @@
 package com.sanvalero.aa2pmdm.manager;
 
+import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapLayer;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.entity.Player;
@@ -68,6 +71,22 @@ public class LevelManager {
     }
 
     private void loadEnemies() {
+    }
+
+    public static Array<Rectangle> getGroundTiles(Vector2 playerPosition) {
+        Array<Rectangle> groundTileCollisionShapes = new Array<>();
+        int playerMapTileX = (int) playerPosition.x / TILE_SIZE;
+        int playerMapTileY = (int) playerPosition.y / TILE_SIZE;
+        for (int y = playerMapTileY - 2; y <= playerMapTileY + 2; y++) {
+            for (int x = playerMapTileX - 2; x <= playerMapTileX + 2; x++) {
+                TiledMapTileLayer.Cell cell = groundLayer.getCell(x, y);
+                if (cell != null && cell.getTile().getProperties().containsKey("ground")) {
+                    Rectangle tileCollisionShape = new Rectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    groundTileCollisionShapes.add(tileCollisionShape);
+                }
+            }
+        }
+        return groundTileCollisionShapes;
     }
 
 }
