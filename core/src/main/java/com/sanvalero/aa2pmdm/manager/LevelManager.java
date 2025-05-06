@@ -19,7 +19,7 @@ public class LevelManager {
     private LogicManager logicManager;
     private int level;
     private TiledMap levelMap;
-    private TiledMapTileLayer groundLayer;
+    private static TiledMapTileLayer groundLayer;
     private MapLayer itemLayer;
     private MapLayer enemyLayer;
 
@@ -31,9 +31,8 @@ public class LevelManager {
 
     private void loadLevel(int level) {
         System.out.println(getLevelFiles().get(0).path());
-        levelMap = new TmxMapLoader().load("levels/level1.tmx"); // TODO: Load the level map file
-        // levelMap = new TmxMapLoader().load(getLevelFiles().get(level).path()); // TODO: Load the level map file
-        // groundLayer
+        levelMap = new TmxMapLoader().load(getLevelFiles().get(level).path());
+        groundLayer = (TiledMapTileLayer) levelMap.getLayers().get("ground");
         // itemLayer
         // enemyLayer
         
