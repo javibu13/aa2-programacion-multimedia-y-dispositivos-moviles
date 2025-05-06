@@ -92,7 +92,6 @@ public class ConfigurationScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
-                R.dispose();
                 game.setScreen(backScreen);
             }
         });
