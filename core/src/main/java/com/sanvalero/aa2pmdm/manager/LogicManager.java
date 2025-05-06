@@ -23,15 +23,19 @@ public class LogicManager {
     private void manageInput(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             player.setState(Player.State.MOVE_RIGHT);
-            player.move(player.getMoveSpeed() * delta, 0);
+            player.setVelocityX(delta * player.getMoveSpeed());
+            // player.move(player.getMoveSpeed() * delta, 0);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             player.setState(Player.State.MOVE_LEFT);
-            player.move(-player.getMoveSpeed() * delta, 0); 
+            player.setVelocityX(-delta * player.getMoveSpeed());
+            // player.move(-player.getMoveSpeed() * delta, 0); 
         } else {
-            if ((player.getState() == Player.State.MOVE_RIGHT) || (player.getState() == Player.State.IDLE_RIGHT)) {
-                player.setState(Player.State.IDLE_RIGHT);
-            } else {
+            if ((player.getState() == Player.State.MOVE_LEFT) || (player.getState() == Player.State.IDLE_LEFT)) {
                 player.setState(Player.State.IDLE_LEFT);
+                player.setVelocityX(0f);
+            } else {
+                player.setState(Player.State.IDLE_RIGHT);
+                player.setVelocityX(0f);
             }
         }
 

@@ -105,5 +105,11 @@ public class Player extends Character {
                 currentFrame = jumpLeftAnim.getKeyFrame(stateTime, true);
                 break;
         }
+        this.move(velocity.x, velocity.y);
+        this.checkGroundCollisions();
+    }
+
+    public void checkGroundCollisions() {
+        
     }
 }

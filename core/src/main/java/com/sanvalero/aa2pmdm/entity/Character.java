@@ -47,4 +47,12 @@ public abstract class Character {
         position.add(x, y);
         collisionShape.setPosition(position.x, position.y);
     }
+
+    public void setVelocityX(float speedX) {
+        velocity.x = speedX;
+    }
+
+    public void setVelocityY(float speedY) {
+        velocity.y = speedY;
+    }
 }
