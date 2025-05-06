@@ -1,5 +1,6 @@
 package com.sanvalero.aa2pmdm.entity;
 
+import static com.sanvalero.aa2pmdm.util.Constants.GRAVITY;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_IDLE_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_ANIMATION_SPEED;
@@ -107,8 +108,20 @@ public class Player extends Character {
                 currentFrame = jumpLeftAnim.getKeyFrame(stateTime, true);
                 break;
         }
-        this.move(velocity.x, velocity.y);
+        velocity.y -= GRAVITY;
+        if (velocity.y < -PLAYER_JUMP_SPEED) {
+            velocity.y = -PLAYER_JUMP_SPEED;
+        }
+        this.move(velocity.x, velocity.y * delta);
         this.checkGroundCollisions();
+    }
+
+    public void jump() {
+        if (isGrounded) {
+            isJumping = true;
+            isGrounded = false;
+            velocity.y = PLAYER_JUMP_SPEED;
+        }
     }
 
     public void checkGroundCollisions() {
@@ -122,6 +135,7 @@ public class Player extends Character {
                     collisionShape.setPosition(position.x, position.y);
                     velocity.y = 0;
                     isGrounded = true;
+                    isJumping = false;
                 } else if (velocity.x > 0 && collisionShape.getX() + collisionShape.getWidth() > tile.getX()) {
                     position.x = tile.getX() - collisionShape.getWidth();
                     collisionShape.setPosition(position.x, position.y);

@@ -40,7 +40,14 @@ public class LogicManager {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            // player.jump();
+            player.jump();
+        }
+        if (player.isJumping()) {
+            if (player.getState() == Player.State.MOVE_LEFT || player.getState() == Player.State.IDLE_LEFT) {
+                player.setState(Player.State.IS_JUMPING_LEFT);
+            } else {
+                player.setState(Player.State.IS_JUMPING_RIGHT);
+            }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.P)) {
