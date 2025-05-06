@@ -30,7 +30,7 @@ public class LogicManager {
             player.setVelocityX(-delta * player.getMoveSpeed());
             // player.move(-player.getMoveSpeed() * delta, 0); 
         } else {
-            if ((player.getState() == Player.State.MOVE_LEFT) || (player.getState() == Player.State.IDLE_LEFT)) {
+            if ((player.getState() == Player.State.MOVE_LEFT) || (player.getState() == Player.State.IDLE_LEFT) || (player.getState() == Player.State.IS_JUMPING_LEFT)) {
                 player.setState(Player.State.IDLE_LEFT);
                 player.setVelocityX(0f);
             } else {
