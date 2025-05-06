@@ -12,7 +12,7 @@ import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.sanvalero.aa2pmdm.Main;
-// import com.sanvalero.aa2pmdm.manager.R;
+import com.sanvalero.aa2pmdm.manager.R;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
 
@@ -51,7 +51,7 @@ public class SplashScreen implements Screen {
         table.row();
         table.add(title).center();
 
-        // R.loadAllResources();
+        R.loadAllResources();
     }
 
     @Override
@@ -62,13 +62,10 @@ public class SplashScreen implements Screen {
         stage.act();
         stage.draw();
 
-        // if (R.update()) {
-        //     if (splashDone) {
-        //         game.setScreen(new MainMenuScreen(game));
-        //     }
-        // }
-        if (splashDone) { // TODO: Change when R.update() is implemented
-            game.setScreen(new MainMenuScreen(game));
+        if (R.update()) {
+            if (splashDone) {
+                game.setScreen(new MainMenuScreen(game));
+            }
         }
 
         timer -= delta;
