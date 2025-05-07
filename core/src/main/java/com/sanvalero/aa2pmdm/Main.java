@@ -6,9 +6,11 @@ import com.sanvalero.aa2pmdm.screen.SplashScreen;
 public class Main extends Game {
 
     public boolean pause;
+    public boolean debug;
 
     public Main() {
         this.pause = false;
+        this.debug = false;
     }
 
     @Override

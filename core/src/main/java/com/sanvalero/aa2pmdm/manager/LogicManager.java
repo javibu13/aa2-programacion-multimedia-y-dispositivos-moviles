@@ -20,6 +20,10 @@ public class LogicManager {
         this.game = game;
     }
 
+    public boolean isDebugMode() {
+        return game.debug;
+    }
+
     private void manageInput(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             player.setState(Player.State.MOVE_RIGHT);
@@ -55,6 +59,10 @@ public class LogicManager {
             game.pause = true;
             // R.getMusic("music").pause(); // TODO: Pause the music when the resource exists
             game.setScreen(new PauseScreen(game, game.getScreen()));
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+            game.debug = !game.debug;
         }
     }
 

@@ -127,24 +127,38 @@ public class Player extends Character {
     public void checkGroundCollisions() {
         // Check if the player is colliding with ground and wall tiles to prevent going through them
         Array<Rectangle> groundTileCollisionShapesArround = LevelManager.getGroundTiles(position);
+        // Variables to control if player has collided with a tile horizontally or vertically to end the loop
+        boolean collidedX = false;
+        boolean collidedY = false;
         for (Rectangle tile : groundTileCollisionShapesArround) {
             if (collisionShape.overlaps(tile)) {
-                // Check if the player is falling and colliding with the ground
-                if (velocity.y < 0) {
+                // Check if right collision overlaps with the tile
+                if (collisionShapeRight.overlaps(tile)) {
+                    position.x = tile.getX() - collisionShape.getWidth();
+                    this.updateCollisionShapes();
+                    velocity.x = 0;
+                } // Check if left collision overlaps with the tile
+                else if (collisionShapeLeft.overlaps(tile)) {
+                    position.x = tile.getX() + tile.getWidth();
+                    this.updateCollisionShapes();
+                    velocity.x = 0;
+                } // Check if top collision overlaps with the tile
+                else if (collisionShapeTop.overlaps(tile)) {
+                    position.y = tile.getY() - collisionShape.getHeight();
+                    this.updateCollisionShapes();
+                    velocity.y = 0;
+                } // Check if bottom collision overlaps with the tile
+                else if (collisionShapeBottom.overlaps(tile)) {
                     position.y = tile.getY() + tile.getHeight();
-                    collisionShape.setPosition(position.x, position.y);
+                    this.updateCollisionShapes();
                     velocity.y = 0;
                     isGrounded = true;
                     isJumping = false;
-                } else if (velocity.x > 0 && collisionShape.getX() + collisionShape.getWidth() > tile.getX()) {
-                    position.x = tile.getX() - collisionShape.getWidth();
-                    collisionShape.setPosition(position.x, position.y);
-                    velocity.x = 0;
-                } else if (velocity.x < 0 && collisionShape.getX() < tile.getX() + tile.getWidth()) {
-                    position.x = tile.getX() + tile.getWidth();
-                    collisionShape.setPosition(position.x, position.y);
-                    velocity.x = 0;
                 }
+            }
+            // Check if the player is colliding with a tile horizontally or vertically to end the loop
+            if (collidedX && collidedY) {
+                break;
             }
         }
     }
