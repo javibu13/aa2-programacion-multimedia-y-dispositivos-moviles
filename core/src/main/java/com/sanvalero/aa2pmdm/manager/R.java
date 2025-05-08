@@ -1,5 +1,10 @@
 package com.sanvalero.aa2pmdm.manager;
 
+import static com.sanvalero.aa2pmdm.util.Constants.BACKGROUND_MUSIC;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEPS_SOUND;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SOUND;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_LANDING_SOUND;
+
 import java.io.File;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -26,17 +31,20 @@ public class R {
     }
 
     private static void loadAllSoundsAndMusic() {
-        // TODO: Load all sounds and music files from the SOUNDS and MUSIC directories
-        // assetManager.load(SOUNDS + File.separator + "sound.mp3", Sound.class);
-        // assetManager.load(MUSIC + File.separator + "music.mp3", Music.class);
+        // Load all sounds
+        assetManager.load(SOUNDS + File.separator + PLAYER_FOOTSTEPS_SOUND, Sound.class);
+        assetManager.load(SOUNDS + File.separator + PLAYER_JUMP_SOUND, Sound.class);
+        assetManager.load(SOUNDS + File.separator + PLAYER_LANDING_SOUND, Sound.class);
+        // Load all music
+        assetManager.load(MUSIC + File.separator + BACKGROUND_MUSIC, Music.class);
     }
 
     public static Sound getSound(String name) {
-        return assetManager.get(SOUNDS + File.separator + name + ".mp3", Sound.class);
+        return assetManager.get(SOUNDS + File.separator + name, Sound.class);
     }
 
     public static Music getMusic(String name) {
-        return assetManager.get(SOUNDS + File.separator + name + ".mp3", Music.class);
+        return assetManager.get(MUSIC + File.separator + name, Music.class);
     }
 
     public static TextureRegion getTexture(String name) {

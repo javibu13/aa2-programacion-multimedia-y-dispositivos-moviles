@@ -21,6 +21,7 @@ import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.R;
 import com.sanvalero.aa2pmdm.util.WindowSize;
 
+import static com.sanvalero.aa2pmdm.util.Constants.BACKGROUND_MUSIC;
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
 
 public class MainMenuScreen implements Screen {
@@ -98,6 +99,17 @@ public class MainMenuScreen implements Screen {
         if (prefs.getBoolean("fullscreen", false)) {
             WindowSize.setFullScreen(stage);
         }
+        if (prefs.getBoolean("sound", true)) {
+            Main.setMusicVolume(0.5f);
+            Main.setSoundVolume(0.5f);
+            R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume());
+        } else {
+            Main.setMusicVolume(0f);
+            Main.setSoundVolume(0f);
+            R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume());
+        }
+        R.getMusic(BACKGROUND_MUSIC).play();
+        R.getMusic(BACKGROUND_MUSIC).setLooping(true);
         // FIXME: Initial window size is not set correctly when MainMenuScreen is shown at the beginning
         //  else {
         //     System.out.println("Windowed mode: " + prefs.getInteger("windowWidth", 640) + "x" + prefs.getInteger("windowHeight", 360));

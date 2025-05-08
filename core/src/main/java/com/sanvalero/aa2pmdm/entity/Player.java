@@ -2,7 +2,9 @@ package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GRAVITY;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_IDLE_ANIMATION_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_LANDING_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_SPEED;
 
@@ -12,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.LevelManager;
 import com.sanvalero.aa2pmdm.manager.R;
 
@@ -121,6 +124,7 @@ public class Player extends Character {
             isJumping = true;
             isGrounded = false;
             velocity.y = PLAYER_JUMP_SPEED;
+            R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.4f, 1.5f, 0.0f);
         }
     }
 
@@ -163,7 +167,8 @@ public class Player extends Character {
         }
         if (bottomCollision) {
             if (!isGrounded) {
-                System.out.println("Player has landed on the ground! SOUND!!");
+                // Play sound when the player lands on the ground
+                R.getSound(PLAYER_LANDING_SOUND).play(Main.getSoundVolume());
             }
             isJumping = false;
             isGrounded = true;

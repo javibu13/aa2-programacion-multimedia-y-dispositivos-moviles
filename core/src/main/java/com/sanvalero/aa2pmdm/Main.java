@@ -7,6 +7,8 @@ public class Main extends Game {
 
     public boolean pause;
     public boolean debug;
+    public static float musicVolume = 0.5f;
+    public static float soundVolume = 0.5f;
 
     public Main() {
         this.pause = false;
@@ -26,5 +28,18 @@ public class Main extends Game {
     @Override
     public void dispose() {
         super.dispose();
+    }
+
+    public static void setMusicVolume(float volume) {
+        musicVolume = volume;
+    }
+    public static void setSoundVolume(float volume) {
+        soundVolume = volume;
+    }
+    public static float getMusicVolume() {
+        return musicVolume;
+    }
+    public static float getSoundVolume() {
+        return soundVolume;
     }
 }
