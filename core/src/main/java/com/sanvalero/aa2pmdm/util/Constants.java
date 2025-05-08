@@ -15,6 +15,7 @@ public class Constants {
     public static final float PLAYER_JUMP_SPEED = 200f;
     public static final float PLAYER_IDLE_ANIMATION_SPEED = 0.4f;
     public static final float PLAYER_MOVE_ANIMATION_SPEED = 0.2f;
+    public static final float PLAYER_FOOTSTEP_INTERVAL = 0.4f;
     // Coin constants
     public static final int COIN_VALUE = 1;
     public static final float COIN_ANIMATION_SPEED = 0.2f;

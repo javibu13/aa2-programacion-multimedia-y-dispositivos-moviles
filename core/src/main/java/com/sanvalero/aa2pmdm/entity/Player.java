@@ -1,12 +1,14 @@
 package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GRAVITY;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEPS_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_IDLE_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_LANDING_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEP_INTERVAL;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -37,6 +39,7 @@ public class Player extends Character {
     private boolean isGrounded;
     private State state;
     private float stateTime;
+    private float footstepTimer;
     private Animation<TextureRegion> idleRightAnim, idleLeftAnim, rightAnim, leftAnim, jumpRightAnim, jumpLeftAnim;
 
     public Player(Vector2 startPosition) {
@@ -54,6 +57,7 @@ public class Player extends Character {
         isGrounded = false;
         state = State.IS_JUMPING_RIGHT;
         stateTime = 0f;
+        footstepTimer = 0f;
     }
 
     public void setAnimations() {
@@ -91,6 +95,7 @@ public class Player extends Character {
     
     public void update(float delta) {
         stateTime += delta;
+        boolean isWalking = false;
         switch (state) {
             case IDLE_RIGHT:
                 currentFrame = idleRightAnim.getKeyFrame(stateTime, true);
@@ -100,9 +105,11 @@ public class Player extends Character {
                 break;
             case MOVE_RIGHT:
                 currentFrame = rightAnim.getKeyFrame(stateTime, true);
+                isWalking = true;
                 break;
             case MOVE_LEFT:
                 currentFrame = leftAnim.getKeyFrame(stateTime, true);
+                isWalking = true;
                 break;
             case IS_JUMPING_RIGHT:
                 currentFrame = jumpRightAnim.getKeyFrame(stateTime, true);
@@ -110,6 +117,19 @@ public class Player extends Character {
             case IS_JUMPING_LEFT:
                 currentFrame = jumpLeftAnim.getKeyFrame(stateTime, true);
                 break;
+        }
+        if (isWalking) {
+            // Play footstep sound
+            if (isGrounded && !isJumping) {
+                footstepTimer += delta;
+                if (footstepTimer >= PLAYER_FOOTSTEP_INTERVAL) {
+                    R.getSound(PLAYER_FOOTSTEPS_SOUND).play(Main.getSoundVolume() * 0.5f, 1.0f, 0.0f);
+                    footstepTimer = 0f;
+                }
+            }
+        } else {
+            // Stop footstep sound
+            R.getSound(PLAYER_FOOTSTEPS_SOUND).stop();
         }
         velocity.y -= GRAVITY;
         if (velocity.y < -PLAYER_JUMP_SPEED) {
@@ -124,7 +144,7 @@ public class Player extends Character {
             isJumping = true;
             isGrounded = false;
             velocity.y = PLAYER_JUMP_SPEED;
-            R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.4f, 1.5f, 0.0f);
+            R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.3f, 1.5f, 0.0f);
         }
     }
 

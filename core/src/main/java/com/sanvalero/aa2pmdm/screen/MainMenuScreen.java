@@ -102,14 +102,13 @@ public class MainMenuScreen implements Screen {
         if (prefs.getBoolean("sound", true)) {
             Main.setMusicVolume(0.5f);
             Main.setSoundVolume(0.5f);
-            R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume());
         } else {
             Main.setMusicVolume(0f);
             Main.setSoundVolume(0f);
-            R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume());
         }
-        R.getMusic(BACKGROUND_MUSIC).play();
+        R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume() * 0.25f);
         R.getMusic(BACKGROUND_MUSIC).setLooping(true);
+        R.getMusic(BACKGROUND_MUSIC).play();
         // FIXME: Initial window size is not set correctly when MainMenuScreen is shown at the beginning
         //  else {
         //     System.out.println("Windowed mode: " + prefs.getInteger("windowWidth", 640) + "x" + prefs.getInteger("windowHeight", 360));
