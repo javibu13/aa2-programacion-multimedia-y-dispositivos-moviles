@@ -41,6 +41,7 @@ public class Player extends Character {
     private float stateTime;
     private float footstepTimer;
     private Animation<TextureRegion> idleRightAnim, idleLeftAnim, rightAnim, leftAnim, jumpRightAnim, jumpLeftAnim;
+    private Rectangle itemCollisionShape;
 
     public Player(Vector2 startPosition) {
         super(R.getRegions("player_jump").get(0), startPosition);
@@ -58,6 +59,8 @@ public class Player extends Character {
         state = State.IS_JUMPING_RIGHT;
         stateTime = 0f;
         footstepTimer = 0f;
+        // Set item collision shapes
+        itemCollisionShape = new Rectangle(position.x + (collisionShape.getWidth()/16*3), position.y + (collisionShape.getHeight()/16*3), collisionShape.getWidth()/16*10, collisionShape.getHeight()/16*10);
     }
 
     public void setAnimations() {
@@ -139,6 +142,12 @@ public class Player extends Character {
         this.checkGroundCollisions();
     }
 
+    @Override
+    public void move(float x, float y) {
+        super.move(x, y);
+        itemCollisionShape.setPosition(position.x + (collisionShape.getWidth()/16*3), position.y + (collisionShape.getHeight()/16*3));
+    }
+
     public void jump() {
         if (isGrounded) {
             isJumping = true;
@@ -196,4 +205,9 @@ public class Player extends Character {
             isGrounded = false;
         }
     }
+
+    public boolean isCollidingWithItem(Rectangle item) {
+        return itemCollisionShape.overlaps(item);
+    }
+
 }

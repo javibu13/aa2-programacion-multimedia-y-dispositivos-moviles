@@ -2,6 +2,7 @@ package com.sanvalero.aa2pmdm.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -66,6 +67,16 @@ public class PauseScreen implements Screen {
             }
         });
 
+        VisTextButton menuButton = new VisTextButton("Main Menu");
+        menuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                backScreen.dispose();
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
         VisTextButton quitButton = new VisTextButton("Exit Game");
         quitButton.addListener(new ClickListener() {
             @Override
@@ -82,6 +93,8 @@ public class PauseScreen implements Screen {
         table.row();
         table.add(configButton).center();
         table.row();
+        table.add(menuButton).center();
+        table.row();
         table.add(quitButton).center();
 
         Gdx.input.setInputProcessor(stage);
@@ -96,6 +109,11 @@ public class PauseScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.2f, 0.537f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            dispose();
+            game.setScreen(backScreen);
+        }
 
         stage.act(delta);
         stage.draw();

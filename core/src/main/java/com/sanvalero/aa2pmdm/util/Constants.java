@@ -4,10 +4,12 @@ public class Constants {
     public static final String GAME_NAME = "AA2 PMDM";
     public static final int TILE_SIZE = 18;
     public static final float GRAVITY = 10f;
+    public static final float BACKGROUND_MUSIC_VOLUME = 0.25f;
     // Sound constants
     public static final String PLAYER_FOOTSTEPS_SOUND = "player_footstep.ogg";
     public static final String PLAYER_JUMP_SOUND = "player_jump1.wav";
     public static final String PLAYER_LANDING_SOUND = "player_landing.ogg";
+    public static final String COIN_COLLECT_SOUND = "coin.mp3";
     // Music constants
     public static final String BACKGROUND_MUSIC = "music.mp3";
     // Player constants

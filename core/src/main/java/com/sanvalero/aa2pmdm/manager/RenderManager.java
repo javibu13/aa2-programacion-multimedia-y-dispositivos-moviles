@@ -74,6 +74,8 @@ public class RenderManager {
             shapeRenderer.rect(logicManager.player.collisionShapeLeft.x, logicManager.player.collisionShapeLeft.y, logicManager.player.collisionShapeLeft.width, logicManager.player.collisionShapeLeft.height);
             shapeRenderer.setColor(Color.ORANGE);
             shapeRenderer.rect(logicManager.player.collisionShapeRight.x, logicManager.player.collisionShapeRight.y, logicManager.player.collisionShapeRight.width, logicManager.player.collisionShapeRight.height);
+            shapeRenderer.setColor(Color.GOLD);
+            shapeRenderer.rect(logicManager.player.getItemCollisionShape().x, logicManager.player.getItemCollisionShape().y, logicManager.player.getItemCollisionShape().width, logicManager.player.getItemCollisionShape().height);
             shapeRenderer.end();
         }
     }

@@ -22,6 +22,7 @@ import com.sanvalero.aa2pmdm.manager.R;
 import com.sanvalero.aa2pmdm.util.WindowSize;
 
 import static com.sanvalero.aa2pmdm.util.Constants.BACKGROUND_MUSIC;
+import static com.sanvalero.aa2pmdm.util.Constants.BACKGROUND_MUSIC_VOLUME;
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
 
 public class MainMenuScreen implements Screen {
@@ -106,7 +107,7 @@ public class MainMenuScreen implements Screen {
             Main.setMusicVolume(0f);
             Main.setSoundVolume(0f);
         }
-        R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume() * 0.25f);
+        R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume() * BACKGROUND_MUSIC_VOLUME);
         R.getMusic(BACKGROUND_MUSIC).setLooping(true);
         R.getMusic(BACKGROUND_MUSIC).play();
         // FIXME: Initial window size is not set correctly when MainMenuScreen is shown at the beginning

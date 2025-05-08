@@ -23,6 +23,8 @@ import com.sanvalero.aa2pmdm.manager.R;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_NAME;
 import static com.sanvalero.aa2pmdm.util.Constants.BACKGROUND_MUSIC;
+import static com.sanvalero.aa2pmdm.util.Constants.BACKGROUND_MUSIC_VOLUME;
+
 import com.sanvalero.aa2pmdm.util.WindowSize;
 
 public class ConfigurationScreen implements Screen {
@@ -70,11 +72,11 @@ public class ConfigurationScreen implements Screen {
                 if (checkSound.isChecked()) {
                     Main.setMusicVolume(0.5f);
                     Main.setSoundVolume(0.5f);
-                    R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume());
+                    R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume() * BACKGROUND_MUSIC_VOLUME);
                 } else {
                     Main.setMusicVolume(0f);
                     Main.setSoundVolume(0f);
-                    R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume());
+                    R.getMusic(BACKGROUND_MUSIC).setVolume(Main.getMusicVolume() * BACKGROUND_MUSIC_VOLUME);
                 }
                 prefs.flush();
             }
