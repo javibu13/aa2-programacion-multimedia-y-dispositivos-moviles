@@ -66,6 +66,16 @@ public class PauseScreen implements Screen {
             }
         });
 
+        VisTextButton menuButton = new VisTextButton("Main Menu");
+        menuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                backScreen.dispose();
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
         VisTextButton quitButton = new VisTextButton("Exit Game");
         quitButton.addListener(new ClickListener() {
             @Override
@@ -81,6 +91,8 @@ public class PauseScreen implements Screen {
         table.add(resumeButton).center();
         table.row();
         table.add(configButton).center();
+        table.row();
+        table.add(menuButton).center();
         table.row();
         table.add(quitButton).center();
 
