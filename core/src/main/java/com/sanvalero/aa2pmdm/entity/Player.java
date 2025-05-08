@@ -1,10 +1,14 @@
 package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GRAVITY;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEPS_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_IDLE_ANIMATION_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_LANDING_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEP_INTERVAL;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -12,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.LevelManager;
 import com.sanvalero.aa2pmdm.manager.R;
 
@@ -34,6 +39,7 @@ public class Player extends Character {
     private boolean isGrounded;
     private State state;
     private float stateTime;
+    private float footstepTimer;
     private Animation<TextureRegion> idleRightAnim, idleLeftAnim, rightAnim, leftAnim, jumpRightAnim, jumpLeftAnim;
 
     public Player(Vector2 startPosition) {
@@ -51,6 +57,7 @@ public class Player extends Character {
         isGrounded = false;
         state = State.IS_JUMPING_RIGHT;
         stateTime = 0f;
+        footstepTimer = 0f;
     }
 
     public void setAnimations() {
@@ -88,6 +95,7 @@ public class Player extends Character {
     
     public void update(float delta) {
         stateTime += delta;
+        boolean isWalking = false;
         switch (state) {
             case IDLE_RIGHT:
                 currentFrame = idleRightAnim.getKeyFrame(stateTime, true);
@@ -97,9 +105,11 @@ public class Player extends Character {
                 break;
             case MOVE_RIGHT:
                 currentFrame = rightAnim.getKeyFrame(stateTime, true);
+                isWalking = true;
                 break;
             case MOVE_LEFT:
                 currentFrame = leftAnim.getKeyFrame(stateTime, true);
+                isWalking = true;
                 break;
             case IS_JUMPING_RIGHT:
                 currentFrame = jumpRightAnim.getKeyFrame(stateTime, true);
@@ -107,6 +117,19 @@ public class Player extends Character {
             case IS_JUMPING_LEFT:
                 currentFrame = jumpLeftAnim.getKeyFrame(stateTime, true);
                 break;
+        }
+        if (isWalking) {
+            // Play footstep sound
+            if (isGrounded && !isJumping) {
+                footstepTimer += delta;
+                if (footstepTimer >= PLAYER_FOOTSTEP_INTERVAL) {
+                    R.getSound(PLAYER_FOOTSTEPS_SOUND).play(Main.getSoundVolume() * 0.5f, 1.0f, 0.0f);
+                    footstepTimer = 0f;
+                }
+            }
+        } else {
+            // Stop footstep sound
+            R.getSound(PLAYER_FOOTSTEPS_SOUND).stop();
         }
         velocity.y -= GRAVITY;
         if (velocity.y < -PLAYER_JUMP_SPEED) {
@@ -121,31 +144,56 @@ public class Player extends Character {
             isJumping = true;
             isGrounded = false;
             velocity.y = PLAYER_JUMP_SPEED;
+            R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.3f, 1.5f, 0.0f);
         }
     }
 
     public void checkGroundCollisions() {
         // Check if the player is colliding with ground and wall tiles to prevent going through them
         Array<Rectangle> groundTileCollisionShapesArround = LevelManager.getGroundTiles(position);
+        // Variables to control if player has collided with a tile horizontally or vertically to end the loop
+        boolean collidedX = false;
+        boolean collidedY = false;
+        boolean bottomCollision = false;
         for (Rectangle tile : groundTileCollisionShapesArround) {
             if (collisionShape.overlaps(tile)) {
-                // Check if the player is falling and colliding with the ground
-                if (velocity.y < 0) {
-                    position.y = tile.getY() + tile.getHeight();
-                    collisionShape.setPosition(position.x, position.y);
-                    velocity.y = 0;
-                    isGrounded = true;
-                    isJumping = false;
-                } else if (velocity.x > 0 && collisionShape.getX() + collisionShape.getWidth() > tile.getX()) {
+                // Check if right collision overlaps with the tile
+                if (collisionShapeRight.overlaps(tile)) {
                     position.x = tile.getX() - collisionShape.getWidth();
-                    collisionShape.setPosition(position.x, position.y);
+                    this.updateCollisionShapes();
                     velocity.x = 0;
-                } else if (velocity.x < 0 && collisionShape.getX() < tile.getX() + tile.getWidth()) {
+                } // Check if left collision overlaps with the tile
+                else if (collisionShapeLeft.overlaps(tile)) {
                     position.x = tile.getX() + tile.getWidth();
-                    collisionShape.setPosition(position.x, position.y);
+                    this.updateCollisionShapes();
                     velocity.x = 0;
+                } // Check if top collision overlaps with the tile
+                else if (collisionShapeTop.overlaps(tile)) {
+                    position.y = tile.getY() - collisionShape.getHeight();
+                    this.updateCollisionShapes();
+                    velocity.y = 0;
+                } // Check if bottom collision overlaps with the tile
+                else if (collisionShapeBottom.overlaps(tile)) {
+                    position.y = tile.getY() + tile.getHeight();
+                    this.updateCollisionShapes();
+                    velocity.y = 0;
+                    bottomCollision = true;
                 }
             }
+            // Check if the player is colliding with a tile horizontally or vertically to end the loop
+            if (collidedX && collidedY) {
+                break;
+            }
+        }
+        if (bottomCollision) {
+            if (!isGrounded) {
+                // Play sound when the player lands on the ground
+                R.getSound(PLAYER_LANDING_SOUND).play(Main.getSoundVolume());
+            }
+            isJumping = false;
+            isGrounded = true;
+        } else {
+            isGrounded = false;
         }
     }
 }

@@ -3,7 +3,9 @@ package com.sanvalero.aa2pmdm.manager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
+import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Player;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 import com.sanvalero.aa2pmdm.screen.PauseScreen;
@@ -15,9 +17,14 @@ public class LogicManager {
 
     private Main game;
     public Player player;
+    public Array<Item> items;
     
     public LogicManager(Main game) {
         this.game = game;
+    }
+
+    public boolean isDebugMode() {
+        return game.debug;
     }
 
     private void manageInput(float delta) {
@@ -56,12 +63,22 @@ public class LogicManager {
             // R.getMusic("music").pause(); // TODO: Pause the music when the resource exists
             game.setScreen(new PauseScreen(game, game.getScreen()));
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+            game.debug = !game.debug;
+        }
     }
 
     public void update(float delta) {
         // Logic game loop
         // manageCollision();
         manageInput(delta);
+        // Update
+        // // Update player
         player.update(delta);
+        // // Update items
+        for (Item item : items) {
+            item.update(delta);
+        }
     }
 }

@@ -2,12 +2,18 @@ package com.sanvalero.aa2pmdm.manager;
 
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.sanvalero.aa2pmdm.entity.Item;
+import com.sanvalero.aa2pmdm.entity.Player;
 
 public class RenderManager {
     
@@ -16,6 +22,7 @@ public class RenderManager {
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
     private BitmapFont font;
+    private ShapeRenderer shapeRenderer;
 
     public RenderManager(LogicManager logicManager, TiledMap levelMap) {
         this.logicManager = logicManager;
@@ -28,6 +35,8 @@ public class RenderManager {
         camera.update();
         
         this.font = new BitmapFont();
+
+        shapeRenderer = new ShapeRenderer();
     }
 
     public void render() {
@@ -38,12 +47,34 @@ public class RenderManager {
         mapRenderer.render();
 
         batch.begin();
+        for (Item item : logicManager.items) {
+            if (item.isVisible()) {
+                batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
+            }
+        }
         batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         // ...
-
+        
         // Draw UI elements
         // batch.draw(R.getTexture("coin"), 20, SCREEN_HEIGHT - 50);
         // font.draw(batch, String.valueOf(logicManager.player.getScore()), 40, SCREEN_HEIGHT - 40);
         batch.end();
+        
+        // Draw player's collision shapes for debugging 
+        if (logicManager.isDebugMode()) {
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.BLACK);
+            shapeRenderer.rect(logicManager.player.collisionShape.x, logicManager.player.collisionShape.y, logicManager.player.collisionShape.width, logicManager.player.collisionShape.height);
+            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.rect(logicManager.player.collisionShapeTop.x, logicManager.player.collisionShapeTop.y, logicManager.player.collisionShapeTop.width, logicManager.player.collisionShapeTop.height);
+            shapeRenderer.setColor(Color.CYAN);
+            shapeRenderer.rect(logicManager.player.collisionShapeBottom.x, logicManager.player.collisionShapeBottom.y, logicManager.player.collisionShapeBottom.width, logicManager.player.collisionShapeBottom.height);
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.rect(logicManager.player.collisionShapeLeft.x, logicManager.player.collisionShapeLeft.y, logicManager.player.collisionShapeLeft.width, logicManager.player.collisionShapeLeft.height);
+            shapeRenderer.setColor(Color.ORANGE);
+            shapeRenderer.rect(logicManager.player.collisionShapeRight.x, logicManager.player.collisionShapeRight.y, logicManager.player.collisionShapeRight.width, logicManager.player.collisionShapeRight.height);
+            shapeRenderer.end();
+        }
     }
 }
