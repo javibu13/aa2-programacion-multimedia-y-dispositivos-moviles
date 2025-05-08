@@ -56,15 +56,30 @@ public class RenderManager {
         batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         // ...
         
-        // Draw UI elements
-        batch.draw(R.getTexture("coin"), 0f, camera.viewportHeight - 20f, 20f, 20f); 
+        // Draw HUD elements
+        float leftPadding = 4f;
+        float topPadding = 4f;
+        // // Lives
+        for (int i = 0; i < logicManager.player.getMaxHealth(); i++) {
+            if (i < logicManager.player.getHealth()) {
+                batch.draw(R.getRegions("heart").get(1), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+            } else {
+                batch.draw(R.getRegions("heart").get(0), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+            }
+        }
+        // // Score
+        batch.draw(R.getTexture("coin"), leftPadding, camera.viewportHeight - 40f - topPadding, 20f, 20f); 
         String score = String.valueOf(logicManager.player.getScore());
         for (int i = 0; i < score.length(); i++) {
             char digit = score.charAt(i);
             // Transform the character to an integer
             int digitValue = digit - '0';
-            batch.draw(R.getRegions("number").get(digitValue), 20f + (i * 20f), camera.viewportHeight - 20f, 20f, 20f);
+            batch.draw(R.getRegions("number").get(digitValue), leftPadding + 20f + (i * 20f), camera.viewportHeight - 40f - topPadding, 20f, 20f);
         }
+        // // Key
+        int keySpriteIndex = logicManager.player.isKey() ? 1 : 0;
+        batch.draw(R.getRegions("key").get(keySpriteIndex), leftPadding + 3f, camera.viewportHeight - 60f - topPadding, 20f, 20f);
+        // // Level
         batch.end();
         
         // Draw player's collision shapes for debugging 
