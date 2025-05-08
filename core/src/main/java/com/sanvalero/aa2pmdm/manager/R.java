@@ -2,6 +2,7 @@ package com.sanvalero.aa2pmdm.manager;
 
 import static com.sanvalero.aa2pmdm.util.Constants.BACKGROUND_MUSIC;
 import static com.sanvalero.aa2pmdm.util.Constants.COIN_COLLECT_SOUND;
+import static com.sanvalero.aa2pmdm.util.Constants.KEY_COLLECT_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEPS_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_LANDING_SOUND;
@@ -37,6 +38,7 @@ public class R {
         assetManager.load(SOUNDS + File.separator + PLAYER_JUMP_SOUND, Sound.class);
         assetManager.load(SOUNDS + File.separator + PLAYER_LANDING_SOUND, Sound.class);
         assetManager.load(SOUNDS + File.separator + COIN_COLLECT_SOUND, Sound.class);
+        assetManager.load(SOUNDS + File.separator + KEY_COLLECT_SOUND, Sound.class);
         // Load all music
         assetManager.load(MUSIC + File.separator + BACKGROUND_MUSIC, Music.class);
     }

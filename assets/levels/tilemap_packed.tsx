@@ -71,6 +71,11 @@
    <property name="ground" value=""/>
   </properties>
  </tile>
+ <tile id="27">
+  <properties>
+   <property name="type" value="key"/>
+  </properties>
+ </tile>
  <tile id="40">
   <properties>
    <property name="ground" value=""/>

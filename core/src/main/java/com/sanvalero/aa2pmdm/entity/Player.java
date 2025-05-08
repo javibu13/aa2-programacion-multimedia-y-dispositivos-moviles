@@ -33,6 +33,7 @@ public class Player extends Character {
     private int lives;
     private int health;
     private int maxHealth;
+    private boolean isKey;
     private float moveSpeed;
     private float jumpSpeed;
     private boolean isJumping;
@@ -52,6 +53,7 @@ public class Player extends Character {
         maxHealth = 3;
         health = maxHealth;
         lives = 3;
+        isKey = false;
         moveSpeed = PLAYER_MOVE_SPEED;
         jumpSpeed = PLAYER_JUMP_SPEED;
         isJumping = true;

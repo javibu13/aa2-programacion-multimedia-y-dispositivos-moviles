@@ -2,6 +2,7 @@ package com.sanvalero.aa2pmdm.manager;
 
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -55,9 +56,30 @@ public class RenderManager {
         batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         // ...
         
-        // Draw UI elements
-        // batch.draw(R.getTexture("coin"), 20, SCREEN_HEIGHT - 50);
-        // font.draw(batch, String.valueOf(logicManager.player.getScore()), 40, SCREEN_HEIGHT - 40);
+        // Draw HUD elements
+        float leftPadding = 4f;
+        float topPadding = 4f;
+        // // Lives
+        for (int i = 0; i < logicManager.player.getMaxHealth(); i++) {
+            if (i < logicManager.player.getHealth()) {
+                batch.draw(R.getRegions("heart").get(1), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+            } else {
+                batch.draw(R.getRegions("heart").get(0), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+            }
+        }
+        // // Score
+        batch.draw(R.getTexture("coin"), leftPadding, camera.viewportHeight - 40f - topPadding, 20f, 20f); 
+        String score = String.valueOf(logicManager.player.getScore());
+        for (int i = 0; i < score.length(); i++) {
+            char digit = score.charAt(i);
+            // Transform the character to an integer
+            int digitValue = digit - '0';
+            batch.draw(R.getRegions("number").get(digitValue), leftPadding + 20f + (i * 20f), camera.viewportHeight - 40f - topPadding, 20f, 20f);
+        }
+        // // Key
+        int keySpriteIndex = logicManager.player.isKey() ? 1 : 0;
+        batch.draw(R.getRegions("key").get(keySpriteIndex), leftPadding + 3f, camera.viewportHeight - 60f - topPadding, 20f, 20f);
+        // // Level
         batch.end();
         
         // Draw player's collision shapes for debugging 
@@ -76,6 +98,12 @@ public class RenderManager {
             shapeRenderer.rect(logicManager.player.collisionShapeRight.x, logicManager.player.collisionShapeRight.y, logicManager.player.collisionShapeRight.width, logicManager.player.collisionShapeRight.height);
             shapeRenderer.setColor(Color.GOLD);
             shapeRenderer.rect(logicManager.player.getItemCollisionShape().x, logicManager.player.getItemCollisionShape().y, logicManager.player.getItemCollisionShape().width, logicManager.player.getItemCollisionShape().height);
+            for (Item item : logicManager.items) {
+                if (item.isActive()) {
+                    shapeRenderer.setColor(Color.BLACK);
+                    shapeRenderer.rect(item.getCollisionShape().x, item.getCollisionShape().y, item.getCollisionShape().width, item.getCollisionShape().height);
+                }
+            }
             shapeRenderer.end();
         }
     }
