@@ -13,6 +13,8 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.sanvalero.aa2pmdm.entity.Coin;
+import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
 
 import lombok.Data;
@@ -79,7 +81,10 @@ public class LevelManager {
             float y = mapObject.getProperties().get("y", Float.class);
             switch (type) {
                 case "coin":
-                    logicManager.items.add(new com.sanvalero.aa2pmdm.entity.Coin(new Vector2(x, y)));
+                    logicManager.items.add(new Coin(new Vector2(x, y)));
+                    break;
+                case "key":
+                    logicManager.items.add(new Key(new Vector2(x, y)));
                     break;
                 default:
                     System.out.println("Unknown item type: " + type);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Coin;
 import com.sanvalero.aa2pmdm.entity.Item;
+import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 import com.sanvalero.aa2pmdm.screen.PauseScreen;
@@ -78,6 +79,11 @@ public class LogicManager {
                     // Handle collision with COIN
                     ((Coin) item).collectByPlayer(player);
                     // Add the coin to be deleted
+                    itemsToDelete.add(item);
+                } else if (item instanceof Key) {
+                    // Handle collision with KEY
+                    ((Key) item).collectByPlayer(player);
+                    // Add the key to be deleted
                     itemsToDelete.add(item);
                 }
             }
