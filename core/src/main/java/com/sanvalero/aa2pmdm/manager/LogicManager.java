@@ -3,7 +3,9 @@ package com.sanvalero.aa2pmdm.manager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
+import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Player;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 import com.sanvalero.aa2pmdm.screen.PauseScreen;
@@ -15,6 +17,7 @@ public class LogicManager {
 
     private Main game;
     public Player player;
+    public Array<Item> items;
     
     public LogicManager(Main game) {
         this.game = game;
@@ -70,6 +73,12 @@ public class LogicManager {
         // Logic game loop
         // manageCollision();
         manageInput(delta);
+        // Update
+        // // Update player
         player.update(delta);
+        // // Update items
+        for (Item item : items) {
+            item.update(delta);
+        }
     }
 }

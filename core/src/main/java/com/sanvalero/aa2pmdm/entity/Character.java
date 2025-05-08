@@ -44,7 +44,6 @@ public abstract class Character extends Entity {
     public void move(float x, float y) {
         position.add(x, y);
         updateCollisionShapes();
-        System.out.println("Position: " + position.x + ", " + position.y);
     }
 
     public void updateCollisionShapes() {

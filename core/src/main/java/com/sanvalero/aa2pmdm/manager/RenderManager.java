@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Player;
 
 public class RenderManager {
@@ -47,6 +48,11 @@ public class RenderManager {
 
         batch.begin();
         batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
+        for (Item item : logicManager.items) {
+            if (item.isVisible()) {
+                batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
+            }
+        }
         // ...
         
         // Draw UI elements

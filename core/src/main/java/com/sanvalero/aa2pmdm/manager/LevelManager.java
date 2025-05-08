@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -23,8 +24,8 @@ public class LevelManager {
     private int level;
     private TiledMap levelMap;
     private static TiledMapTileLayer groundLayer;
-    private MapLayer itemLayer;
-    private MapLayer enemyLayer;
+    private static MapLayer itemLayer;
+    private static MapLayer enemyLayer;
 
     public LevelManager(LogicManager logicManager, int level) {
         this.logicManager = logicManager;
@@ -36,9 +37,9 @@ public class LevelManager {
         System.out.println(getLevelFiles().get(0).path());
         levelMap = new TmxMapLoader().load(getLevelFiles().get(level).path());
         groundLayer = (TiledMapTileLayer) levelMap.getLayers().get("ground");
-        // itemLayer
-        // enemyLayer
-        
+        itemLayer = levelMap.getLayers().get("items");
+        // enemyLayer = levelMap.getLayers().get("enemies");
+
         initializeLevel();
     }
 
@@ -61,13 +62,30 @@ public class LevelManager {
         float mapPlayerX = mapPlayer.getProperties().get("x", Float.class);
         float mapPlayerY = mapPlayer.getProperties().get("y", Float.class);
         logicManager.player = new Player(new Vector2(mapPlayerX, mapPlayerY));
-        // logicManager.items = new Array<Item>();
+        logicManager.items = new Array<>();
         // ...
         loadItems();
         loadEnemies();
     }
 
     private void loadItems() {
+        for (MapObject mapObject : itemLayer.getObjects()) {
+            if (!((TiledMapTileMapObject) mapObject).getTile().getProperties().containsKey("type")) {
+                System.out.println("No type property found in mapObject: " + mapObject.getName());
+                continue;
+            }
+            String type = ((TiledMapTileMapObject) mapObject).getTile().getProperties().get("type", String.class);
+            float x = mapObject.getProperties().get("x", Float.class);
+            float y = mapObject.getProperties().get("y", Float.class);
+            switch (type) {
+                case "coin":
+                    logicManager.items.add(new com.sanvalero.aa2pmdm.entity.Coin(new Vector2(x, y)));
+                    break;
+                default:
+                    System.out.println("Unknown item type: " + type);
+                    break;
+            }
+        }
     }
 
     private void loadEnemies() {
