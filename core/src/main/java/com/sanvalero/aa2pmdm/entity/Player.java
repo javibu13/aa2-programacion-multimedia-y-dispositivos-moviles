@@ -130,6 +130,7 @@ public class Player extends Character {
         // Variables to control if player has collided with a tile horizontally or vertically to end the loop
         boolean collidedX = false;
         boolean collidedY = false;
+        boolean bottomCollision = false;
         for (Rectangle tile : groundTileCollisionShapesArround) {
             if (collisionShape.overlaps(tile)) {
                 // Check if right collision overlaps with the tile
@@ -152,14 +153,22 @@ public class Player extends Character {
                     position.y = tile.getY() + tile.getHeight();
                     this.updateCollisionShapes();
                     velocity.y = 0;
-                    isGrounded = true;
-                    isJumping = false;
+                    bottomCollision = true;
                 }
             }
             // Check if the player is colliding with a tile horizontally or vertically to end the loop
             if (collidedX && collidedY) {
                 break;
             }
+        }
+        if (bottomCollision) {
+            if (!isGrounded) {
+                System.out.println("Player has landed on the ground! SOUND!!");
+            }
+            isJumping = false;
+            isGrounded = true;
+        } else {
+            isGrounded = false;
         }
     }
 }

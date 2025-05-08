@@ -47,12 +47,12 @@ public class RenderManager {
         mapRenderer.render();
 
         batch.begin();
-        batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         for (Item item : logicManager.items) {
             if (item.isVisible()) {
                 batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
             }
         }
+        batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         // ...
         
         // Draw UI elements
