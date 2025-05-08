@@ -16,6 +16,7 @@ public abstract class Item extends Entity {
         this.isActive = true;
         this.isVisible = true;
         this.isCollected = false;
+        createCollisionShape();
     }
 
     public Item(TextureRegion currentFrame, Vector2 position) {
@@ -23,6 +24,7 @@ public abstract class Item extends Entity {
         this.isActive = true;
         this.isVisible = true;
         this.isCollected = false;
+        createCollisionShape();
     }
 
     public abstract void update(float deltaTime);

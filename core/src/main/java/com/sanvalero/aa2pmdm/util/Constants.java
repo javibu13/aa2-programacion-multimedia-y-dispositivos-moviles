@@ -9,6 +9,7 @@ public class Constants {
     public static final String PLAYER_FOOTSTEPS_SOUND = "player_footstep.ogg";
     public static final String PLAYER_JUMP_SOUND = "player_jump1.wav";
     public static final String PLAYER_LANDING_SOUND = "player_landing.ogg";
+    public static final String COIN_COLLECT_SOUND = "coin.mp3";
     // Music constants
     public static final String BACKGROUND_MUSIC = "music.mp3";
     // Player constants

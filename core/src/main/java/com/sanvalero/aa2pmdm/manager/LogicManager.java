@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
+import com.sanvalero.aa2pmdm.entity.Coin;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Player;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
@@ -68,9 +69,28 @@ public class LogicManager {
         }
     }
 
+    public void manageCollision() {
+        // Check for collisions between player and items
+        Array<Item> itemsToDelete = new Array<>(); // It could be replaced by a inverted for loop to impove performance
+        for (Item item : items) {
+            if (item.isActive() && player.isCollidingWithItem(item.getCollisionShape())) {
+                if (item instanceof Coin) {
+                    // Handle collision with COIN
+                    ((Coin) item).collectByPlayer(player);
+                    // Add the coin to be deleted
+                    itemsToDelete.add(item);
+                }
+            }
+        }
+        // Remove items marked for deletion to avoid concurrent issues, memory leaks and item skipping
+        for (Item item : itemsToDelete) { // It could be replaced by a inverted for loop to impove performance
+            items.removeValue(item, true);
+        }
+    }
+
     public void update(float delta) {
         // Logic game loop
-        // manageCollision();
+        manageCollision();
         manageInput(delta);
         // Update
         // // Update player

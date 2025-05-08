@@ -1,6 +1,7 @@
 package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.COIN_ANIMATION_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.COIN_COLLECT_SOUND;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -35,6 +36,15 @@ public class Coin extends Item {
             currentFrame = animation.getKeyFrame(stateTime, true);
             // collisionShape.setPosition(position.x, position.y);
         }
+    }
+
+    public void collectByPlayer(Player player) {
+        isActive = false;
+        isVisible = false;
+        isCollected = true;
+        R.getSound(COIN_COLLECT_SOUND).play(0.4f);
+        player.setScore(player.getScore() + value);
+        System.out.println("Coin collected! Score: " + player.getScore());
     }
 
 }
