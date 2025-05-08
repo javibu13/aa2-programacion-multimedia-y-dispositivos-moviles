@@ -57,10 +57,9 @@ public class LogicManager {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyPressed(Input.Keys.P)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             // Pause the game and show the pause menu
             game.pause = true;
-            // R.getMusic("music").pause(); // TODO: Pause the music when the resource exists
             game.setScreen(new PauseScreen(game, game.getScreen()));
         }
 
