@@ -2,6 +2,7 @@ package com.sanvalero.aa2pmdm.manager;
 
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,8 +57,14 @@ public class RenderManager {
         // ...
         
         // Draw UI elements
-        // batch.draw(R.getTexture("coin"), 20, SCREEN_HEIGHT - 50);
-        // font.draw(batch, String.valueOf(logicManager.player.getScore()), 40, SCREEN_HEIGHT - 40);
+        batch.draw(R.getTexture("coin"), 0f, camera.viewportHeight - 20f, 20f, 20f); 
+        String score = String.valueOf(logicManager.player.getScore());
+        for (int i = 0; i < score.length(); i++) {
+            char digit = score.charAt(i);
+            // Transform the character to an integer
+            int digitValue = digit - '0';
+            batch.draw(R.getRegions("number").get(digitValue), 20f + (i * 20f), camera.viewportHeight - 20f, 20f, 20f);
+        }
         batch.end();
         
         // Draw player's collision shapes for debugging 
@@ -76,6 +83,12 @@ public class RenderManager {
             shapeRenderer.rect(logicManager.player.collisionShapeRight.x, logicManager.player.collisionShapeRight.y, logicManager.player.collisionShapeRight.width, logicManager.player.collisionShapeRight.height);
             shapeRenderer.setColor(Color.GOLD);
             shapeRenderer.rect(logicManager.player.getItemCollisionShape().x, logicManager.player.getItemCollisionShape().y, logicManager.player.getItemCollisionShape().width, logicManager.player.getItemCollisionShape().height);
+            for (Item item : logicManager.items) {
+                if (item.isActive()) {
+                    shapeRenderer.setColor(Color.BLACK);
+                    shapeRenderer.rect(item.getCollisionShape().x, item.getCollisionShape().y, item.getCollisionShape().width, item.getCollisionShape().height);
+                }
+            }
             shapeRenderer.end();
         }
     }
