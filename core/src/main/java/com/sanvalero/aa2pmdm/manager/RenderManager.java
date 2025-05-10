@@ -53,6 +53,7 @@ public class RenderManager {
                 batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
             }
         }
+        batch.draw(logicManager.exit.getCurrentFrame(), logicManager.exit.getPosition().x, logicManager.exit.getPosition().y);
         batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         // ...
         

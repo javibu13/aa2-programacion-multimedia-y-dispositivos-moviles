@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Coin;
+import com.sanvalero.aa2pmdm.entity.Exit;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
@@ -18,11 +19,19 @@ import lombok.Data;
 public class LogicManager {
 
     private Main game;
+    private int level;
     public Player player;
     public Array<Item> items;
+    public Exit exit;
     
     public LogicManager(Main game) {
         this.game = game;
+        this.level = 1;
+    }
+
+    public LogicManager(Main game, int level) {
+        this.game = game;
+        this.level = level;
     }
 
     public boolean isDebugMode() {
@@ -71,6 +80,11 @@ public class LogicManager {
     }
 
     public void manageCollision() {
+        manageItemCollision();
+        manageExitCollision();
+    }
+
+    public void manageItemCollision() {
         // Check for collisions between player and items
         Array<Item> itemsToDelete = new Array<>(); // It could be replaced by a inverted for loop to impove performance
         for (Item item : items) {
@@ -85,6 +99,7 @@ public class LogicManager {
                     ((Key) item).collectByPlayer(player);
                     // Add the key to be deleted
                     itemsToDelete.add(item);
+                    exit.open();
                 }
             }
         }
@@ -93,6 +108,19 @@ public class LogicManager {
             items.removeValue(item, true);
         }
     }
+
+    public void manageExitCollision() {
+        // Check for collisions between player and exit
+        if (exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
+            // Change to the next level
+            System.out.println("Go to next level! (Level " + (level + 1) + ")");
+            game.setScreen(new GameScreen(game, level + 1));
+        } else if (!exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
+            // Show message to player
+            System.out.println("You need a key to open this door!");
+        }
+    }
+            
 
     public void update(float delta) {
         // Logic game loop

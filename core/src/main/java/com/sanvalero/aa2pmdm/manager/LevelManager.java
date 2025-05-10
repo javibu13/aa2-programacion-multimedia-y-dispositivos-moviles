@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.entity.Coin;
+import com.sanvalero.aa2pmdm.entity.Exit;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
 
@@ -36,8 +37,19 @@ public class LevelManager {
     }
 
     private void loadLevel(int level) {
-        System.out.println(getLevelFiles().get(0).path());
-        levelMap = new TmxMapLoader().load(getLevelFiles().get(level).path());
+        Array<FileHandle> levelList = getLevelFiles();
+        System.out.println("Level list size: " + levelList.size);
+        System.out.println("Level number: " + level);
+        if (level < 0 || level > levelList.size) {
+            System.out.println("Invalid level number: " + level);
+            throw new IllegalArgumentException("Level number must be between 0 and " + (levelList.size - 1));
+        } else if (level == levelList.size) {
+            System.out.println("No more levels available. Game Over!");
+            // TODO: Implement game over logic
+            return;
+        }
+        System.out.println(levelList.get(level).path());
+        levelMap = new TmxMapLoader().load(levelList.get(level).path());
         groundLayer = (TiledMapTileLayer) levelMap.getLayers().get("ground");
         itemLayer = levelMap.getLayers().get("items");
         // enemyLayer = levelMap.getLayers().get("enemies");
@@ -60,10 +72,14 @@ public class LevelManager {
     private void initializeLevel() {
         // Initialize the player
         MapObject mapPlayer = levelMap.getLayers().get("player").getObjects().get(0);
+        MapObject mapExit = levelMap.getLayers().get("exit").getObjects().get(0);
         System.out.println(mapPlayer.getProperties());
         float mapPlayerX = mapPlayer.getProperties().get("x", Float.class);
         float mapPlayerY = mapPlayer.getProperties().get("y", Float.class);
+        float mapExitX = mapExit.getProperties().get("x", Float.class);
+        float mapExitY = mapExit.getProperties().get("y", Float.class);
         logicManager.player = new Player(new Vector2(mapPlayerX, mapPlayerY));
+        logicManager.exit = new Exit(new Vector2(mapExitX, mapExitY));
         logicManager.items = new Array<>();
         // ...
         loadItems();

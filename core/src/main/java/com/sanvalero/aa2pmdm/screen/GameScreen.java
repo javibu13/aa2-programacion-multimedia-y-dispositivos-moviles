@@ -15,12 +15,13 @@ public class GameScreen implements Screen {
 
     public GameScreen(Main game, int level) {
         this.game = game;
+        this.level = level;
         ConfigurationManager.loadPreferences();
         loadManagers();
     }
 
     private void loadManagers() {
-        logicManager = new LogicManager(game);
+        logicManager = new LogicManager(game, level);
         levelManager = new LevelManager(logicManager, level);
         renderManager = new RenderManager(logicManager, levelManager.getLevelMap());
     }
@@ -28,9 +29,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         game.pause = false;
-        if (ConfigurationManager.isSoundEnabled()) {
-            // R.getMusic("music").play();
-        }
     }
 
     @Override
