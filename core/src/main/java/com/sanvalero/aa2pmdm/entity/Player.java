@@ -159,8 +159,8 @@ public class Player extends Character {
     }
 
     public void jump() {
-        if (isJumping) {
-            return; // Already jumping
+        if (isJumping || !isActive) {
+            return; // Already jumping or player is not active
         }
         if (isGrounded) {
             isJumping = true;

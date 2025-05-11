@@ -52,6 +52,7 @@ public class Spaceship extends Item {
         currentFrame = R.getRegions("spaceship").get(3);
         R.getSound(GAME_COMPLETE_SOUND).play(Main.getSoundVolume() * 0.4f);
         player.setVisible(false);
+        player.setActive(false);
         System.out.println("Game completed!");
     }
 
