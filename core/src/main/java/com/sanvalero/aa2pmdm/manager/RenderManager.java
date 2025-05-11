@@ -127,6 +127,7 @@ public class RenderManager {
         if (logicManager.isDebugMode()) {
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            // PLAYER
             shapeRenderer.setColor(Color.BLACK);
             shapeRenderer.rect(logicManager.player.collisionShape.x, logicManager.player.collisionShape.y, logicManager.player.collisionShape.width, logicManager.player.collisionShape.height);
             shapeRenderer.setColor(Color.BLUE);
@@ -139,6 +140,10 @@ public class RenderManager {
             shapeRenderer.rect(logicManager.player.collisionShapeRight.x, logicManager.player.collisionShapeRight.y, logicManager.player.collisionShapeRight.width, logicManager.player.collisionShapeRight.height);
             shapeRenderer.setColor(Color.GOLD);
             shapeRenderer.rect(logicManager.player.getItemCollisionShape().x, logicManager.player.getItemCollisionShape().y, logicManager.player.getItemCollisionShape().width, logicManager.player.getItemCollisionShape().height);
+            // EXIT
+            shapeRenderer.setColor(Color.BLACK);
+            shapeRenderer.rect(logicManager.exit.getCollisionShape().x, logicManager.exit.getCollisionShape().y, logicManager.exit.getCollisionShape().width, logicManager.exit.getCollisionShape().height);
+            // ITEMS
             for (Item item : logicManager.items) {
                 if (item.isActive()) {
                     shapeRenderer.setColor(Color.BLACK);
@@ -146,6 +151,14 @@ public class RenderManager {
                 }
             }
             shapeRenderer.end();
+            // deathLayer visible
+            if (logicManager.deathLayer != null && !logicManager.deathLayer.isVisible()) {
+                logicManager.deathLayer.setVisible(true);
+            }
+        } else {
+            if (logicManager.deathLayer != null && logicManager.deathLayer.isVisible()) {
+                logicManager.deathLayer.setVisible(false);
+            }
         }
 
         // Draw UI stage

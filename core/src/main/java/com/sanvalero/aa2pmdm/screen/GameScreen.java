@@ -41,6 +41,12 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         if (!game.pause) {
             logicManager.update(delta);
+            if (logicManager.isGameOver()) {
+                // Change to Game Over screen
+                System.out.println("Game Over! You lose!");
+                // TODO: Dispose?
+                game.setScreen(new GameOverScreen(game));
+            }
         }
         renderManager.render();
     }

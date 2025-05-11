@@ -9,6 +9,8 @@ import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_LANDING_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEP_INTERVAL;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_HEAL_SOUND;
+import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_HURT_SOUND;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -150,6 +152,7 @@ public class Player extends Character {
         }
         this.move(velocity.x, velocity.y * delta);
         this.checkGroundCollisions();
+        this.checkDeathCollisions();
     }
 
     @Override
@@ -218,9 +221,40 @@ public class Player extends Character {
             isGrounded = false;
         }
     }
+    
+    public void checkDeathCollisions() {
+        // Check if the player is colliding with death tiles to prevent going through them
+        // If colliding, move the player to its start position and decrease its health
+        Array<Rectangle> deathTileCollisionShapesArround = LevelManager.getDeathTiles(position);
+        for (Rectangle tile : deathTileCollisionShapesArround) {
+            if (collisionShape.overlaps(tile)) {
+                // DEATH COLLISION
+                // Move the player to its start position
+                position = startPosition.cpy();
+                // Hurt the player
+                this.hurt(1);
+                // Exit the loop
+                break;
+            }
+        }
+    }
 
     public boolean isCollidingWithItem(Rectangle item) {
         return itemCollisionShape.overlaps(item);
+    }
+
+    public void hurt(int damage) {
+        health -= damage;
+        R.getSound(PLAYER_HURT_SOUND).play(Main.getSoundVolume() * 0.4f, 2.0f, 0.0f);
+    }
+
+    public void heal(int heal) {
+        health += heal;
+        if (health > maxHealth) {
+            health = maxHealth;
+        } else {
+            R.getSound(PLAYER_HEAL_SOUND).play(Main.getSoundVolume() * 0.5f);
+        }
     }
 
 }

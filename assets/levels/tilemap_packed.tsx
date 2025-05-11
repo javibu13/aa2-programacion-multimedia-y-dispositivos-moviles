@@ -136,6 +136,11 @@
    <property name="ground" value=""/>
   </properties>
  </tile>
+ <tile id="68">
+  <properties>
+   <property name="death" value=""/>
+  </properties>
+ </tile>
  <tile id="80">
   <properties>
    <property name="ground" value=""/>

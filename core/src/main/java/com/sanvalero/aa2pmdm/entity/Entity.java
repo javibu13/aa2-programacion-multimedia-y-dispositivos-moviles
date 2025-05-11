@@ -10,6 +10,7 @@ import lombok.Data;
 public class Entity {
     protected TextureRegion currentFrame;
     protected Vector2 position;
+    protected Vector2 startPosition;
     protected boolean isVisible; // Indicates if the entity is visible on the screen
     protected boolean isActive; // Indicates if the item is active in the game to be interacted with or controlled
     public Rectangle collisionShape;
@@ -17,11 +18,13 @@ public class Entity {
     public Entity(TextureRegion currentFrame) {
         this.currentFrame = currentFrame;
         this.position = new Vector2(0, 0);
+        this.startPosition = new Vector2(0, 0);
     }
 
     public Entity(TextureRegion currentFrame, Vector2 position) {
         this.currentFrame = currentFrame;
         this.position = position;
+        this.startPosition = position.cpy();
     }
 
     public void createCollisionShape() {

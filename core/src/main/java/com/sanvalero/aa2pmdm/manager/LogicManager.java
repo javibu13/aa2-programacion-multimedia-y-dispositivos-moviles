@@ -3,6 +3,7 @@ package com.sanvalero.aa2pmdm.manager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Ally;
@@ -12,6 +13,7 @@ import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
 import com.sanvalero.aa2pmdm.entity.Spaceship;
+import com.sanvalero.aa2pmdm.screen.GameOverScreen;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 import com.sanvalero.aa2pmdm.screen.PauseScreen;
 
@@ -25,6 +27,8 @@ public class LogicManager {
     public Player player;
     public Array<Item> items;
     public Exit exit;
+    public TiledMapTileLayer groundLayer;
+    public TiledMapTileLayer deathLayer;
     // GameOver level
     public Ally ally;
     public Spaceship spaceship;
@@ -83,6 +87,10 @@ public class LogicManager {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
             game.debug = !game.debug;
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F2) && game.debug) {
+            player.heal(1);
+        }
+
     }
 
     public void manageCollision() {
@@ -153,6 +161,15 @@ public class LogicManager {
         } else if (!exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
             // Show message to player
             System.out.println("You need a key to open this door!");
+        }
+    }
+
+    public boolean isGameOver() {
+        // Check if the player is dead
+        if (player.getHealth() <= 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
