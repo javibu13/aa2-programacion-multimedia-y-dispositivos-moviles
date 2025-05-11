@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public abstract class Character extends Entity {

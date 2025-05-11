@@ -10,6 +10,8 @@ public class Constants {
     public static final String PLAYER_FOOTSTEPS_SOUND = "player_footstep.ogg";
     public static final String PLAYER_JUMP_SOUND = "player_jump1.wav";
     public static final String PLAYER_LANDING_SOUND = "player_landing.ogg";
+    public static final String PLAYER_HURT_SOUND = "player_hurt.wav";
+    public static final String PLAYER_HEAL_SOUND = "player_heal.wav";
     public static final String COIN_COLLECT_SOUND = "coin.mp3";
     public static final String KEY_COLLECT_SOUND = "key.wav";
     // Music constants

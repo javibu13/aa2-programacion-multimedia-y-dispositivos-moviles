@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,29 +20,32 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Item;
+import com.sanvalero.aa2pmdm.entity.Spaceship;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 
 public class RenderManager {
     
     private LogicManager logicManager;
+    private CameraManager cameraManager;
     private Batch batch;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private OrthographicCamera camera;
+    // private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
     // UI elements - Game Over
     private Stage uiStage;
     private VisTextField nameField;
 
 
-    public RenderManager(LogicManager logicManager, TiledMap levelMap, GameScreen gameScreen) {
+    public RenderManager(LogicManager logicManager, CameraManager cameraManager, TiledMap levelMap, GameScreen gameScreen) {
         this.logicManager = logicManager;
 
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap);
         this.batch = mapRenderer.getBatch();
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
-        camera.update();
+        // camera = new OrthographicCamera();
+        // camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
+        // camera.update();
+        this.cameraManager = cameraManager;
 
         shapeRenderer = new ShapeRenderer();
 
@@ -74,14 +78,20 @@ public class RenderManager {
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
-        camera.update();
+        cameraManager.updateCameraPosition(logicManager.player);
+        cameraManager.update();
+        OrthographicCamera camera = cameraManager.getCamera();
         mapRenderer.setView(camera);
         mapRenderer.render();
 
         batch.begin();
         for (Item item : logicManager.items) {
             if (item.isVisible()) {
-                batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
+                if (item instanceof Spaceship) {
+                    batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y, 96f, 96f);
+                } else {
+                    batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
+                }
             }
         }
         batch.draw(logicManager.exit.getCurrentFrame(), logicManager.exit.getPosition().x, logicManager.exit.getPosition().y);
@@ -122,6 +132,7 @@ public class RenderManager {
         if (logicManager.isDebugMode()) {
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            // PLAYER
             shapeRenderer.setColor(Color.BLACK);
             shapeRenderer.rect(logicManager.player.collisionShape.x, logicManager.player.collisionShape.y, logicManager.player.collisionShape.width, logicManager.player.collisionShape.height);
             shapeRenderer.setColor(Color.BLUE);
@@ -134,13 +145,28 @@ public class RenderManager {
             shapeRenderer.rect(logicManager.player.collisionShapeRight.x, logicManager.player.collisionShapeRight.y, logicManager.player.collisionShapeRight.width, logicManager.player.collisionShapeRight.height);
             shapeRenderer.setColor(Color.GOLD);
             shapeRenderer.rect(logicManager.player.getItemCollisionShape().x, logicManager.player.getItemCollisionShape().y, logicManager.player.getItemCollisionShape().width, logicManager.player.getItemCollisionShape().height);
+            // EXIT
+            shapeRenderer.setColor(Color.BLACK);
+            shapeRenderer.rect(logicManager.exit.getCollisionShape().x, logicManager.exit.getCollisionShape().y, logicManager.exit.getCollisionShape().width, logicManager.exit.getCollisionShape().height);
+            // ITEMS
             for (Item item : logicManager.items) {
                 if (item.isActive()) {
                     shapeRenderer.setColor(Color.BLACK);
                     shapeRenderer.rect(item.getCollisionShape().x, item.getCollisionShape().y, item.getCollisionShape().width, item.getCollisionShape().height);
                 }
             }
+            // CameraLimits
+            shapeRenderer.setColor(Color.GREEN);
+            shapeRenderer.rect(cameraManager.getCameraLeftLimit(), camera.position.y - (cameraManager.getCAMERA_HORIZONTAL_SAFE_ZONE()*TILE_SIZE), cameraManager.getCAMERA_HORIZONTAL_SAFE_ZONE()*2*TILE_SIZE, cameraManager.getCAMERA_VERTICAL_SAFE_ZONE()*2*TILE_SIZE);
             shapeRenderer.end();
+            // deathLayer visible
+            if (logicManager.deathLayer != null && !logicManager.deathLayer.isVisible()) {
+                logicManager.deathLayer.setVisible(true);
+            }
+        } else {
+            if (logicManager.deathLayer != null && logicManager.deathLayer.isVisible()) {
+                logicManager.deathLayer.setVisible(false);
+            }
         }
 
         // Draw UI stage

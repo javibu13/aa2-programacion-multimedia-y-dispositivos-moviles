@@ -11,6 +11,7 @@ public class GameScreen implements Screen {
     private LogicManager logicManager;
     private RenderManager renderManager;
     private LevelManager levelManager;
+    private CameraManager cameraManager;
 
     public GameScreen(Main game, int level) {
         this.game = game;
@@ -25,7 +26,8 @@ public class GameScreen implements Screen {
         // Update level in LogicManager after loading LevelManager because it can be changed in case of Game Over
         this.level = levelManager.getLevel();
         logicManager.setLevel(level);
-        renderManager = new RenderManager(logicManager, levelManager.getLevelMap(), this);
+        cameraManager = new CameraManager(levelManager.getLevelMap());
+        renderManager = new RenderManager(logicManager, cameraManager, levelManager.getLevelMap(), this);
     }
 
     public void setScreenToLeaderboard() {
@@ -41,6 +43,12 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         if (!game.pause) {
             logicManager.update(delta);
+            if (logicManager.isGameOver()) {
+                // Change to Game Over screen
+                System.out.println("Game Over! You lose!");
+                // TODO: Dispose?
+                game.setScreen(new GameOverScreen(game));
+            }
         }
         renderManager.render();
     }

@@ -1,9 +1,7 @@
 package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_COMPLETE_SOUND;
-import static com.sanvalero.aa2pmdm.util.Constants.KEY_COLLECT_SOUND;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.R;
@@ -52,6 +50,7 @@ public class Spaceship extends Item {
         currentFrame = R.getRegions("spaceship").get(3);
         R.getSound(GAME_COMPLETE_SOUND).play(Main.getSoundVolume() * 0.4f);
         player.setVisible(false);
+        player.setActive(false);
         System.out.println("Game completed!");
     }
 

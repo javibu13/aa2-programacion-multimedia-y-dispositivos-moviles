@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -31,6 +32,7 @@ public class LevelManager {
     private int level;
     private TiledMap levelMap;
     private static TiledMapTileLayer groundLayer;
+    private static TiledMapTileLayer deathLayer;
     private static MapLayer itemLayer;
     private static MapLayer enemyLayer;
 
@@ -61,6 +63,10 @@ public class LevelManager {
             levelMap = new TmxMapLoader().load(levelList.get(level).path());
         }
         groundLayer = (TiledMapTileLayer) levelMap.getLayers().get("ground");
+        logicManager.groundLayer = groundLayer;
+        deathLayer = getDeathLayer();
+        logicManager.deathLayer = deathLayer;
+        deathLayer.setVisible(false); // Hide death layer
         itemLayer = levelMap.getLayers().get("items");
         // enemyLayer = levelMap.getLayers().get("enemies");
 
@@ -94,6 +100,23 @@ public class LevelManager {
         // ...
         loadItems();
         loadEnemies();
+    }
+
+    private TiledMapTileLayer getDeathLayer() {
+        deathLayer = (TiledMapTileLayer) levelMap.getLayers().get("death");
+        if (deathLayer == null) {
+            // Get properties of the levelMap
+            MapProperties props = levelMap.getProperties();
+            int mapWidth = props.get("width", Integer.class);
+            int mapHeight = props.get("height", Integer.class);
+            int tileWidth = props.get("tilewidth", Integer.class);
+            int tileHeight = props.get("tileheight", Integer.class);
+            // Create a new and empty death layer
+            deathLayer = new TiledMapTileLayer(mapWidth, mapHeight, tileWidth, tileHeight);
+            deathLayer.setName("death");
+            levelMap.getLayers().add(deathLayer);
+        }
+        return deathLayer;
     }
 
     private void loadItems() {
@@ -142,6 +165,23 @@ public class LevelManager {
             }
         }
         return groundTileCollisionShapes;
+    }
+
+    // TODO: Refactor getGroundTiles and getDeathTiles to avoid code duplication
+    public static Array<Rectangle> getDeathTiles(Vector2 playerPosition) {
+        Array<Rectangle> deathTileCollisionShapes = new Array<>();
+        int playerMapTileX = (int) playerPosition.x / TILE_SIZE;
+        int playerMapTileY = (int) playerPosition.y / TILE_SIZE;
+        for (int y = playerMapTileY - 2; y <= playerMapTileY + 2; y++) {
+            for (int x = playerMapTileX - 2; x <= playerMapTileX + 2; x++) {
+                TiledMapTileLayer.Cell cell = deathLayer.getCell(x, y);
+                if (cell != null && cell.getTile().getProperties().containsKey("death")) {
+                    Rectangle tileCollisionShape = new Rectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    deathTileCollisionShapes.add(tileCollisionShape);
+                }
+            }
+        }
+        return deathTileCollisionShapes;
     }
 
 }

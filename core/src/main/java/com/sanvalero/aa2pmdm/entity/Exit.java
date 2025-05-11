@@ -1,7 +1,5 @@
 package com.sanvalero.aa2pmdm.entity;
 
-import static com.sanvalero.aa2pmdm.util.Constants.KEY_COLLECT_SOUND;
-
 import com.badlogic.gdx.math.Vector2;
 import com.sanvalero.aa2pmdm.manager.R;
 
