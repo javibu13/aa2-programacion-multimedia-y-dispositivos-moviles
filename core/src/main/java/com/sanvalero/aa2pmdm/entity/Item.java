@@ -6,9 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import lombok.Data;
 
 @Data
-public abstract class Item extends Entity {
-    protected boolean isActive; // Indicates if the item is active in the game to be interacted with
-    protected boolean isVisible; // Indicates if the item is visible on the screen
+public abstract class Item extends Entity { 
     protected boolean isCollected; // Indicates if the item has been collected by the player
 
     public Item(TextureRegion currentFrame) {

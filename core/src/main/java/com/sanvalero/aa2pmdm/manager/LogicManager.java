@@ -3,13 +3,16 @@ package com.sanvalero.aa2pmdm.manager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
+import com.sanvalero.aa2pmdm.entity.Ally;
 import com.sanvalero.aa2pmdm.entity.Coin;
 import com.sanvalero.aa2pmdm.entity.Exit;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
+import com.sanvalero.aa2pmdm.entity.Spaceship;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 import com.sanvalero.aa2pmdm.screen.PauseScreen;
 
@@ -23,6 +26,10 @@ public class LogicManager {
     public Player player;
     public Array<Item> items;
     public Exit exit;
+    // GameOver level
+    public Ally ally;
+    public Spaceship spaceship;
+    public MapLayer imageLayer;
     
     public LogicManager(Main game) {
         this.game = game;
@@ -100,6 +107,31 @@ public class LogicManager {
                     // Add the key to be deleted
                     itemsToDelete.add(item);
                     exit.open();
+                } else if (item instanceof Ally) {
+                    // Handle collision with ALLY
+                    ((Ally) item).collectByPlayer(player);
+                } else if (item instanceof Spaceship) {
+                    // Handle collision with SPACESHIP
+                    ((Spaceship) item).collectByPlayer(player);
+                }
+            }
+            if (level == -1) {
+                // GAME OVER - LEVEL
+                if (ally == null || spaceship == null) {
+                    if (item instanceof Ally) {
+                        ally = (Ally) item;
+                    } else if (item instanceof Spaceship) {
+                        spaceship = (Spaceship) item;
+                    }
+                } else if (item instanceof Ally && ally.isCollidingWithSpaceship(spaceship.getCollisionShape())) {
+                    System.out.println("Sapceship reached!");
+                    // Ally has reached the spaceship
+                    ally.setActive(false);
+                    ally.setVisible(false);
+                    spaceship.addAlly();
+                }
+                if (spaceship != null && spaceship.getTimeTakingOff() > 3f) {
+                    imageLayer.setVisible(true);
                 }
             }
         }
@@ -120,7 +152,6 @@ public class LogicManager {
             System.out.println("You need a key to open this door!");
         }
     }
-            
 
     public void update(float delta) {
         // Logic game loop

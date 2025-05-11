@@ -231,6 +231,11 @@
    <property name="ground" value=""/>
   </properties>
  </tile>
+ <tile id="145">
+  <properties>
+   <property name="type" value="spaceship"/>
+  </properties>
+ </tile>
  <tile id="146">
   <properties>
    <property name="ground" value=""/>

@@ -4,6 +4,7 @@ import static com.sanvalero.aa2pmdm.util.Constants.KEY_COLLECT_SOUND;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.R;
 
 import lombok.Data;
@@ -38,7 +39,7 @@ public class Key extends Item {
         isActive = false;
         isVisible = false;
         isCollected = true;
-        R.getSound(KEY_COLLECT_SOUND).play(0.4f);
+        R.getSound(KEY_COLLECT_SOUND).play(Main.getSoundVolume() * 0.4f);
         player.setKey(true);
         System.out.println("Key collected!");
     }

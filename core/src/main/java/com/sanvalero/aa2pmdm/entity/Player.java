@@ -58,6 +58,8 @@ public class Player extends Character {
         jumpSpeed = PLAYER_JUMP_SPEED;
         isJumping = true;
         isGrounded = false;
+        isVisible = true;
+        isActive = true;
         state = State.IS_JUMPING_RIGHT;
         stateTime = 0f;
         footstepTimer = 0f;
@@ -99,6 +101,9 @@ public class Player extends Character {
     }
     
     public void update(float delta) {
+        if (!isActive) {
+            return; // Player is not active
+        }
         stateTime += delta;
         boolean isWalking = false;
         switch (state) {
@@ -151,6 +156,9 @@ public class Player extends Character {
     }
 
     public void jump() {
+        if (isJumping) {
+            return; // Already jumping
+        }
         if (isGrounded) {
             isJumping = true;
             isGrounded = false;

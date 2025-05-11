@@ -3,7 +3,6 @@ package com.sanvalero.aa2pmdm.screen;
 import com.badlogic.gdx.Screen;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.*;
-import com.sanvalero.aa2pmdm.util.WindowSize;
 
 public class GameScreen implements Screen {
 
@@ -23,7 +22,14 @@ public class GameScreen implements Screen {
     private void loadManagers() {
         logicManager = new LogicManager(game, level);
         levelManager = new LevelManager(logicManager, level);
-        renderManager = new RenderManager(logicManager, levelManager.getLevelMap());
+        // Update level in LogicManager after loading LevelManager because it can be changed in case of Game Over
+        this.level = levelManager.getLevel();
+        logicManager.setLevel(level);
+        renderManager = new RenderManager(logicManager, levelManager.getLevelMap(), this);
+    }
+
+    public void setScreenToLeaderboard() {
+        game.setScreen(new LeaderboardScreen(game));
     }
 
     @Override

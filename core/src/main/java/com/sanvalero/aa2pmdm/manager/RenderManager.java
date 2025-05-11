@@ -5,16 +5,21 @@ import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.VisTextField;
 import com.sanvalero.aa2pmdm.entity.Item;
-import com.sanvalero.aa2pmdm.entity.Player;
+import com.sanvalero.aa2pmdm.screen.GameScreen;
 
 public class RenderManager {
     
@@ -24,8 +29,9 @@ public class RenderManager {
     private OrthographicCamera camera;
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
+    private Stage uiStage;
 
-    public RenderManager(LogicManager logicManager, TiledMap levelMap) {
+    public RenderManager(LogicManager logicManager, TiledMap levelMap, GameScreen gameScreen) {
         this.logicManager = logicManager;
 
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap);
@@ -38,6 +44,30 @@ public class RenderManager {
         this.font = new BitmapFont();
 
         shapeRenderer = new ShapeRenderer();
+
+        // Set up the UI stage
+        uiStage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(null); // Disable input for the UI stage until is shown
+        VisTable table = new VisTable(true);
+        table.setFillParent(true);
+        table.bottom().padBottom(90);
+        uiStage.addActor(table);
+        // Text field for entering the name
+        VisTextField nameField = new VisTextField("");
+        nameField.setMessageText("Enter your name");
+        // Button to submit the player name
+        VisTextButton continueButton = new VisTextButton("Continue");
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                uiStage.dispose();
+                gameScreen.setScreenToLeaderboard();
+            }
+        });
+        table.row();
+        table.add(nameField).width(200f).height(50f).pad(10f);
+        table.row();
+        table.add(continueButton).width(200f).height(50f).pad(10f);
     }
 
     public void render() {
@@ -54,33 +84,37 @@ public class RenderManager {
             }
         }
         batch.draw(logicManager.exit.getCurrentFrame(), logicManager.exit.getPosition().x, logicManager.exit.getPosition().y);
-        batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
+        if (logicManager.player.isVisible()) {
+            batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
+        }
         // ...
         
         // Draw HUD elements
-        float leftPadding = 4f;
-        float topPadding = 4f;
-        // // Lives
-        for (int i = 0; i < logicManager.player.getMaxHealth(); i++) {
-            if (i < logicManager.player.getHealth()) {
-                batch.draw(R.getRegions("heart").get(1), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
-            } else {
-                batch.draw(R.getRegions("heart").get(0), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+        if (logicManager.getLevel() >= 0) {
+            float leftPadding = 4f;
+            float topPadding = 4f;
+            // // Lives
+            for (int i = 0; i < logicManager.player.getMaxHealth(); i++) {
+                if (i < logicManager.player.getHealth()) {
+                    batch.draw(R.getRegions("heart").get(1), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+                } else {
+                    batch.draw(R.getRegions("heart").get(0), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+                }
             }
+            // // Score
+            batch.draw(R.getTexture("coin"), leftPadding, camera.viewportHeight - 40f - topPadding, 20f, 20f); 
+            String score = String.valueOf(logicManager.player.getScore());
+            for (int i = 0; i < score.length(); i++) {
+                char digit = score.charAt(i);
+                // Transform the character to an integer
+                int digitValue = digit - '0';
+                batch.draw(R.getRegions("number").get(digitValue), leftPadding + 20f + (i * 20f), camera.viewportHeight - 40f - topPadding, 20f, 20f);
+            }
+            // // Key
+            int keySpriteIndex = logicManager.player.isKey() ? 1 : 0;
+            batch.draw(R.getRegions("key").get(keySpriteIndex), leftPadding + 3f, camera.viewportHeight - 60f - topPadding, 20f, 20f);
+            // // Level
         }
-        // // Score
-        batch.draw(R.getTexture("coin"), leftPadding, camera.viewportHeight - 40f - topPadding, 20f, 20f); 
-        String score = String.valueOf(logicManager.player.getScore());
-        for (int i = 0; i < score.length(); i++) {
-            char digit = score.charAt(i);
-            // Transform the character to an integer
-            int digitValue = digit - '0';
-            batch.draw(R.getRegions("number").get(digitValue), leftPadding + 20f + (i * 20f), camera.viewportHeight - 40f - topPadding, 20f, 20f);
-        }
-        // // Key
-        int keySpriteIndex = logicManager.player.isKey() ? 1 : 0;
-        batch.draw(R.getRegions("key").get(keySpriteIndex), leftPadding + 3f, camera.viewportHeight - 60f - topPadding, 20f, 20f);
-        // // Level
         batch.end();
         
         // Draw player's collision shapes for debugging 
@@ -106,6 +140,15 @@ public class RenderManager {
                 }
             }
             shapeRenderer.end();
+        }
+
+        // Draw UI stage
+        if (logicManager.imageLayer != null && logicManager.imageLayer.isVisible()) {
+            if (Gdx.input.getInputProcessor() == null) {
+                Gdx.input.setInputProcessor(uiStage);
+            }
+            uiStage.act(Gdx.graphics.getDeltaTime());
+            uiStage.draw();
         }
     }
 }
