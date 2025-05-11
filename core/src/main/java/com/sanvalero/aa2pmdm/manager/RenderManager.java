@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -25,24 +26,26 @@ import com.sanvalero.aa2pmdm.screen.GameScreen;
 public class RenderManager {
     
     private LogicManager logicManager;
+    private CameraManager cameraManager;
     private Batch batch;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private OrthographicCamera camera;
+    // private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
     // UI elements - Game Over
     private Stage uiStage;
     private VisTextField nameField;
 
 
-    public RenderManager(LogicManager logicManager, TiledMap levelMap, GameScreen gameScreen) {
+    public RenderManager(LogicManager logicManager, CameraManager cameraManager, TiledMap levelMap, GameScreen gameScreen) {
         this.logicManager = logicManager;
 
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap);
         this.batch = mapRenderer.getBatch();
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
-        camera.update();
+        // camera = new OrthographicCamera();
+        // camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
+        // camera.update();
+        this.cameraManager = cameraManager;
 
         shapeRenderer = new ShapeRenderer();
 
@@ -75,7 +78,9 @@ public class RenderManager {
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
-        camera.update();
+        cameraManager.updateCameraPosition(logicManager.player);
+        cameraManager.update();
+        OrthographicCamera camera = cameraManager.getCamera();
         mapRenderer.setView(camera);
         mapRenderer.render();
 
@@ -150,6 +155,9 @@ public class RenderManager {
                     shapeRenderer.rect(item.getCollisionShape().x, item.getCollisionShape().y, item.getCollisionShape().width, item.getCollisionShape().height);
                 }
             }
+            // CameraLimits
+            shapeRenderer.setColor(Color.GREEN);
+            shapeRenderer.rect(cameraManager.getCameraLeftLimit(), camera.position.y - (cameraManager.getCAMERA_HORIZONTAL_SAFE_ZONE()*TILE_SIZE), cameraManager.getCAMERA_HORIZONTAL_SAFE_ZONE()*2*TILE_SIZE, cameraManager.getCAMERA_VERTICAL_SAFE_ZONE()*2*TILE_SIZE);
             shapeRenderer.end();
             // deathLayer visible
             if (logicManager.deathLayer != null && !logicManager.deathLayer.isVisible()) {

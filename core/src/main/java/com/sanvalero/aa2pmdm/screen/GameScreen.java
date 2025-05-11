@@ -11,6 +11,7 @@ public class GameScreen implements Screen {
     private LogicManager logicManager;
     private RenderManager renderManager;
     private LevelManager levelManager;
+    private CameraManager cameraManager;
 
     public GameScreen(Main game, int level) {
         this.game = game;
@@ -25,7 +26,8 @@ public class GameScreen implements Screen {
         // Update level in LogicManager after loading LevelManager because it can be changed in case of Game Over
         this.level = levelManager.getLevel();
         logicManager.setLevel(level);
-        renderManager = new RenderManager(logicManager, levelManager.getLevelMap(), this);
+        cameraManager = new CameraManager(levelManager.getLevelMap());
+        renderManager = new RenderManager(logicManager, cameraManager, levelManager.getLevelMap(), this);
     }
 
     public void setScreenToLeaderboard() {
