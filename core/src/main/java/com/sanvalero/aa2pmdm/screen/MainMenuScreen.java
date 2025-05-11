@@ -34,6 +34,9 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(Main game) {
         this.game = game;
         prefs = Gdx.app.getPreferences(GAME_NAME);
+        Main.playerScore = 0;
+        Main.playerName = "";
+        Main.playerTime = 0;
     }
 
     private void loadStage() {

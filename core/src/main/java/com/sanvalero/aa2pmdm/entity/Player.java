@@ -41,6 +41,7 @@ public class Player extends Character {
     private State state;
     private float stateTime;
     private float footstepTimer;
+    private float playedTime;
     private Animation<TextureRegion> idleRightAnim, idleLeftAnim, rightAnim, leftAnim, jumpRightAnim, jumpLeftAnim;
     private Rectangle itemCollisionShape;
 
@@ -63,6 +64,7 @@ public class Player extends Character {
         state = State.IS_JUMPING_RIGHT;
         stateTime = 0f;
         footstepTimer = 0f;
+        playedTime = 0f;
         // Set item collision shapes
         itemCollisionShape = new Rectangle(position.x + (collisionShape.getWidth()/16*3), position.y + (collisionShape.getHeight()/16*3), collisionShape.getWidth()/16*10, collisionShape.getHeight()/16*10);
     }
@@ -104,6 +106,7 @@ public class Player extends Character {
         if (!isActive) {
             return; // Player is not active
         }
+        playedTime += delta;
         stateTime += delta;
         boolean isWalking = false;
         switch (state) {

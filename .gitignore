@@ -169,3 +169,6 @@ Thumbs.db
 ## Tiled map editor:
 *.tiled-project
 *.tiled-session
+
+## Project files:
+*leaderboard.json

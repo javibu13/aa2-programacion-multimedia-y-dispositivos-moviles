@@ -146,6 +146,10 @@ public class LogicManager {
         if (exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
             // Change to the next level
             System.out.println("Go to next level! (Level " + (level + 1) + ")");
+            // Update the global run variable
+            Main.playerScore += player.getScore();
+            Main.playerTime += player.getPlayedTime();
+            // Create a new GameScreen with the next level and set it as the current screen
             game.setScreen(new GameScreen(game, level + 1));
         } else if (!exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
             // Show message to player

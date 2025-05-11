@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -18,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 
@@ -27,9 +27,11 @@ public class RenderManager {
     private Batch batch;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
-    private BitmapFont font;
     private ShapeRenderer shapeRenderer;
+    // UI elements - Game Over
     private Stage uiStage;
+    private VisTextField nameField;
+
 
     public RenderManager(LogicManager logicManager, TiledMap levelMap, GameScreen gameScreen) {
         this.logicManager = logicManager;
@@ -40,8 +42,6 @@ public class RenderManager {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
         camera.update();
-        
-        this.font = new BitmapFont();
 
         shapeRenderer = new ShapeRenderer();
 
@@ -53,13 +53,14 @@ public class RenderManager {
         table.bottom().padBottom(90);
         uiStage.addActor(table);
         // Text field for entering the name
-        VisTextField nameField = new VisTextField("");
+        nameField = new VisTextField("");
         nameField.setMessageText("Enter your name");
         // Button to submit the player name
         VisTextButton continueButton = new VisTextButton("Continue");
         continueButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Main.playerName = nameField.getText();
                 uiStage.dispose();
                 gameScreen.setScreenToLeaderboard();
             }
@@ -71,7 +72,7 @@ public class RenderManager {
     }
 
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f); // TODO: Change to a background color
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
         camera.update();
         mapRenderer.setView(camera);

@@ -9,6 +9,9 @@ public class Main extends Game {
     public boolean debug;
     public static float musicVolume = 0.5f;
     public static float soundVolume = 0.5f;
+    public static String playerName = "";
+    public static int playerScore = 0;
+    public static float playerTime = 0f;
 
     public Main() {
         this.pause = false;
