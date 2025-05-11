@@ -19,6 +19,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Item;
+import com.sanvalero.aa2pmdm.entity.Spaceship;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 
 public class RenderManager {
@@ -81,7 +82,11 @@ public class RenderManager {
         batch.begin();
         for (Item item : logicManager.items) {
             if (item.isVisible()) {
-                batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
+                if (item instanceof Spaceship) {
+                    batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y, 96f, 96f);
+                } else {
+                    batch.draw(item.getCurrentFrame(), item.getPosition().x, item.getPosition().y);
+                }
             }
         }
         batch.draw(logicManager.exit.getCurrentFrame(), logicManager.exit.getPosition().x, logicManager.exit.getPosition().y);
