@@ -6,6 +6,7 @@ import static com.sanvalero.aa2pmdm.util.Constants.COIN_COLLECT_SOUND;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.R;
 
 import lombok.Data;
@@ -42,7 +43,7 @@ public class Coin extends Item {
         isActive = false;
         isVisible = false;
         isCollected = true;
-        R.getSound(COIN_COLLECT_SOUND).play(0.4f);
+        R.getSound(COIN_COLLECT_SOUND).play(Main.getSoundVolume() * 0.4f);
         player.setScore(player.getScore() + value);
         System.out.println("Coin collected! Score: " + player.getScore());
     }

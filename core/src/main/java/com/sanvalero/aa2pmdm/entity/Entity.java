@@ -10,6 +10,8 @@ import lombok.Data;
 public class Entity {
     protected TextureRegion currentFrame;
     protected Vector2 position;
+    protected boolean isVisible; // Indicates if the entity is visible on the screen
+    protected boolean isActive; // Indicates if the item is active in the game to be interacted with or controlled
     public Rectangle collisionShape;
 
     public Entity(TextureRegion currentFrame) {

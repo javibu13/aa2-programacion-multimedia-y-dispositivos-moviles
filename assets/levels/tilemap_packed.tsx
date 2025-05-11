@@ -181,6 +181,11 @@
    <property name="ground" value=""/>
   </properties>
  </tile>
+ <tile id="110">
+  <properties>
+   <property name="type" value="exit"/>
+  </properties>
+ </tile>
  <tile id="120">
   <properties>
    <property name="ground" value=""/>
@@ -199,6 +204,11 @@
  <tile id="123">
   <properties>
    <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="130">
+  <properties>
+   <property name="type" value="exit"/>
   </properties>
  </tile>
  <tile id="140">
@@ -221,6 +231,11 @@
    <property name="ground" value=""/>
   </properties>
  </tile>
+ <tile id="145">
+  <properties>
+   <property name="type" value="spaceship"/>
+  </properties>
+ </tile>
  <tile id="146">
   <properties>
    <property name="ground" value=""/>
@@ -229,6 +244,11 @@
  <tile id="147">
   <properties>
    <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="150">
+  <properties>
+   <property name="type" value="exit"/>
   </properties>
  </tile>
  <tile id="151">

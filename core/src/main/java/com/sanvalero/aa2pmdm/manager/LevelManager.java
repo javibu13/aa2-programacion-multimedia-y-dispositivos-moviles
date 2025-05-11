@@ -2,6 +2,8 @@ package com.sanvalero.aa2pmdm.manager;
 
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
+import java.io.File;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapLayer;
@@ -13,9 +15,12 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.sanvalero.aa2pmdm.entity.Ally;
 import com.sanvalero.aa2pmdm.entity.Coin;
+import com.sanvalero.aa2pmdm.entity.Exit;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
+import com.sanvalero.aa2pmdm.entity.Spaceship;
 
 import lombok.Data;
 
@@ -36,8 +41,25 @@ public class LevelManager {
     }
 
     private void loadLevel(int level) {
-        System.out.println(getLevelFiles().get(0).path());
-        levelMap = new TmxMapLoader().load(getLevelFiles().get(level).path());
+        Array<FileHandle> levelList = getLevelFiles();
+        System.out.println("Level list size: " + levelList.size);
+        System.out.println("Level number: " + level);
+        if (level < 0 || level > levelList.size) {
+            // Invalid level number
+            System.out.println("Invalid level number: " + level);
+            throw new IllegalArgumentException("Level number must be between 0 and " + (levelList.size - 1));
+        } else if (level == levelList.size) {
+            // Game Over level
+            System.out.println("No more levels available. Game Over!");
+            this.level = -1; // Set level to -1 for Game Over
+            levelMap = new TmxMapLoader().load("levels" + File.separator + "gameOver" + File.separator + "gameOver.tmx");
+            // Get imageLayer with game over image
+            logicManager.imageLayer = levelMap.getLayers().get("gameOver");
+        } else {
+            // Load the level
+            System.out.println(levelList.get(level).path());
+            levelMap = new TmxMapLoader().load(levelList.get(level).path());
+        }
         groundLayer = (TiledMapTileLayer) levelMap.getLayers().get("ground");
         itemLayer = levelMap.getLayers().get("items");
         // enemyLayer = levelMap.getLayers().get("enemies");
@@ -46,7 +68,7 @@ public class LevelManager {
     }
 
     private Array<FileHandle> getLevelFiles() {
-        FileHandle levelsFolder = Gdx.files.internal("levels/");
+        FileHandle levelsFolder = Gdx.files.internal("levels" + File.separator);
         FileHandle[] allFiles = levelsFolder.list();
         Array<FileHandle> levelFiles = new Array<>();
         for (FileHandle file : allFiles) {
@@ -60,10 +82,14 @@ public class LevelManager {
     private void initializeLevel() {
         // Initialize the player
         MapObject mapPlayer = levelMap.getLayers().get("player").getObjects().get(0);
+        MapObject mapExit = levelMap.getLayers().get("exit").getObjects().get(0);
         System.out.println(mapPlayer.getProperties());
         float mapPlayerX = mapPlayer.getProperties().get("x", Float.class);
         float mapPlayerY = mapPlayer.getProperties().get("y", Float.class);
+        float mapExitX = mapExit.getProperties().get("x", Float.class);
+        float mapExitY = mapExit.getProperties().get("y", Float.class);
         logicManager.player = new Player(new Vector2(mapPlayerX, mapPlayerY));
+        logicManager.exit = new Exit(new Vector2(mapExitX, mapExitY));
         logicManager.items = new Array<>();
         // ...
         loadItems();
@@ -85,6 +111,12 @@ public class LevelManager {
                     break;
                 case "key":
                     logicManager.items.add(new Key(new Vector2(x, y)));
+                    break;
+                case "ally":
+                    logicManager.items.add(new Ally(new Vector2(x, y)));
+                    break;
+                case "spaceship":
+                    logicManager.items.add(new Spaceship(new Vector2(x, y)));
                     break;
                 default:
                     System.out.println("Unknown item type: " + type);

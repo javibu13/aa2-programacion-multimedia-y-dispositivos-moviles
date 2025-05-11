@@ -3,12 +3,16 @@ package com.sanvalero.aa2pmdm.manager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
+import com.sanvalero.aa2pmdm.entity.Ally;
 import com.sanvalero.aa2pmdm.entity.Coin;
+import com.sanvalero.aa2pmdm.entity.Exit;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
+import com.sanvalero.aa2pmdm.entity.Spaceship;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
 import com.sanvalero.aa2pmdm.screen.PauseScreen;
 
@@ -18,11 +22,23 @@ import lombok.Data;
 public class LogicManager {
 
     private Main game;
+    private int level;
     public Player player;
     public Array<Item> items;
+    public Exit exit;
+    // GameOver level
+    public Ally ally;
+    public Spaceship spaceship;
+    public MapLayer imageLayer;
     
     public LogicManager(Main game) {
         this.game = game;
+        this.level = 1;
+    }
+
+    public LogicManager(Main game, int level) {
+        this.game = game;
+        this.level = level;
     }
 
     public boolean isDebugMode() {
@@ -71,6 +87,11 @@ public class LogicManager {
     }
 
     public void manageCollision() {
+        manageItemCollision();
+        manageExitCollision();
+    }
+
+    public void manageItemCollision() {
         // Check for collisions between player and items
         Array<Item> itemsToDelete = new Array<>(); // It could be replaced by a inverted for loop to impove performance
         for (Item item : items) {
@@ -85,12 +106,54 @@ public class LogicManager {
                     ((Key) item).collectByPlayer(player);
                     // Add the key to be deleted
                     itemsToDelete.add(item);
+                    exit.open();
+                } else if (item instanceof Ally) {
+                    // Handle collision with ALLY
+                    ((Ally) item).collectByPlayer(player);
+                } else if (item instanceof Spaceship) {
+                    // Handle collision with SPACESHIP
+                    ((Spaceship) item).collectByPlayer(player);
+                }
+            }
+            if (level == -1) {
+                // GAME OVER - LEVEL
+                if (ally == null || spaceship == null) {
+                    if (item instanceof Ally) {
+                        ally = (Ally) item;
+                    } else if (item instanceof Spaceship) {
+                        spaceship = (Spaceship) item;
+                    }
+                } else if (item instanceof Ally && ally.isCollidingWithSpaceship(spaceship.getCollisionShape())) {
+                    System.out.println("Sapceship reached!");
+                    // Ally has reached the spaceship
+                    ally.setActive(false);
+                    ally.setVisible(false);
+                    spaceship.addAlly();
+                }
+                if (spaceship != null && spaceship.getTimeTakingOff() > 3f) {
+                    imageLayer.setVisible(true);
                 }
             }
         }
         // Remove items marked for deletion to avoid concurrent issues, memory leaks and item skipping
         for (Item item : itemsToDelete) { // It could be replaced by a inverted for loop to impove performance
             items.removeValue(item, true);
+        }
+    }
+
+    public void manageExitCollision() {
+        // Check for collisions between player and exit
+        if (exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
+            // Change to the next level
+            System.out.println("Go to next level! (Level " + (level + 1) + ")");
+            // Update the global run variable
+            Main.playerScore += player.getScore();
+            Main.playerTime += player.getPlayedTime();
+            // Create a new GameScreen with the next level and set it as the current screen
+            game.setScreen(new GameScreen(game, level + 1));
+        } else if (!exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
+            // Show message to player
+            System.out.println("You need a key to open this door!");
         }
     }
 

@@ -34,6 +34,9 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(Main game) {
         this.game = game;
         prefs = Gdx.app.getPreferences(GAME_NAME);
+        Main.playerScore = 0;
+        Main.playerName = "";
+        Main.playerTime = 0;
     }
 
     private void loadStage() {
@@ -63,6 +66,15 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        VisTextButton howToPlayButton = new VisTextButton("How To Play");
+        howToPlayButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HowToPlayScreen(game, game.getScreen()));
+            }
+        });
+
         VisTextButton configButton = new VisTextButton("Settings");
         configButton.addListener(new ClickListener() {
             @Override
@@ -86,6 +98,8 @@ public class MainMenuScreen implements Screen {
         table.add(title).center();
         table.row();
         table.add(playButton).center();
+        table.row();
+        table.add(howToPlayButton).center();
         table.row();
         table.add(configButton).center();
         table.row();
