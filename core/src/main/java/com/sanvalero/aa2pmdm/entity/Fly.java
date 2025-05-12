@@ -65,7 +65,7 @@ public class Fly extends Enemy {
             }
         }
         // Update collision shape position
-        collisionShape.setPosition(position.x, position.y);
+        updateCollisionShapes();
     }
 
     public void collideWithPlayer(Player player) {

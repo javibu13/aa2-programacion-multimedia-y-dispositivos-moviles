@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="64" height="16" tilewidth="18" tileheight="18" infinite="0" nextlayerid="10" nextobjectid="21">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="64" height="16" tilewidth="18" tileheight="18" infinite="0" nextlayerid="10" nextobjectid="22">
  <tileset firstgid="1" source="tilemap-backgrounds_packed.tsx"/>
  <tileset firstgid="25" source="tilemap_packed.tsx"/>
  <tileset firstgid="205" source="tilemap-characters_packed.tsx"/>
@@ -90,6 +90,11 @@
   <object id="8" gid="230" x="360" y="144" width="24" height="24">
    <properties>
     <property name="distance" type="int" value="29"/>
+   </properties>
+  </object>
+  <object id="21" gid="226" x="918" y="252" width="24" height="24">
+   <properties>
+    <property name="distance" type="int" value="11"/>
    </properties>
   </object>
  </objectgroup>

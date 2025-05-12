@@ -230,13 +230,18 @@ public class Player extends Character {
             if (collisionShape.overlaps(tile)) {
                 // DEATH COLLISION
                 // Move the player to its start position
-                position = startPosition.cpy();
+                this.resetPosition();
                 // Hurt the player
                 this.hurt(1);
                 // Exit the loop
                 break;
             }
         }
+    }
+
+    public void resetPosition() {
+        // Reset the player position to its start position
+        position = startPosition.cpy();
     }
 
     public boolean isCollidingWithItem(Rectangle item) {

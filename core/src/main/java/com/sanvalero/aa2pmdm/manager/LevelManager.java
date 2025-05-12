@@ -23,6 +23,7 @@ import com.sanvalero.aa2pmdm.entity.Fly;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
 import com.sanvalero.aa2pmdm.entity.Spaceship;
+import com.sanvalero.aa2pmdm.entity.Tank;
 
 import lombok.Data;
 
@@ -175,6 +176,7 @@ public class LevelManager {
             String type = ((TiledMapTileMapObject) mapObject).getTile().getProperties().get("enemy", String.class);
             float x = mapObject.getProperties().get("x", Float.class);
             float y = mapObject.getProperties().get("y", Float.class);
+            int distance = 0;
             switch (type) {
                 case "fly":
                     // Check if the distance property exists
@@ -182,9 +184,18 @@ public class LevelManager {
                         System.out.println("No 'distance' property found for fly enemy at: " + x + ", " + y + ". Skipping.");
                         continue;
                     }
-                    int distance = mapObject.getProperties().get("distance", Integer.class);
+                    distance = mapObject.getProperties().get("distance", Integer.class);
                     logicManager.enemies.add(new Fly(new Vector2(x, y), distance));
-                    System.out.println("Fly enemy added at: " + x + ", " + y);
+                    break;
+                case "tank":
+                    // Check if the distance property exists
+                    if (!mapObject.getProperties().containsKey("distance")) {
+                        // TODO: Replace this to use ground detection if the distance property is not found
+                        System.out.println("No 'distance' property found for tank enemy at: " + x + ", " + y + ". Skipping.");
+                        continue;
+                    }
+                    distance = mapObject.getProperties().get("distance", Integer.class);
+                    logicManager.enemies.add(new Tank(new Vector2(x, y), distance));
                     break;
                 default:
                     System.out.println("Unknown enemy type: " + type);

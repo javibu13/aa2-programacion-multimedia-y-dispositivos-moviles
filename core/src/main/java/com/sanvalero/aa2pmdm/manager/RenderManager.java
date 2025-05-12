@@ -167,6 +167,8 @@ public class RenderManager {
                 if (enemy.isActive()) {
                     shapeRenderer.setColor(Color.BLACK);
                     shapeRenderer.rect(enemy.getCollisionShape().x, enemy.getCollisionShape().y, enemy.getCollisionShape().width, enemy.getCollisionShape().height);
+                    shapeRenderer.setColor(Color.BLUE);
+                    shapeRenderer.rect(enemy.collisionShapeTop.x, enemy.collisionShapeTop.y, enemy.collisionShapeTop.width, enemy.collisionShapeTop.height);
                 }
             }
             // CameraLimits

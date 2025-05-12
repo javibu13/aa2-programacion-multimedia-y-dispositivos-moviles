@@ -94,32 +94,32 @@
  </tile>
  <tile id="18">
   <properties>
-   <property name="enemy" value="bugSmall"/>
+   <property name="enemy" value="tanky"/>
   </properties>
  </tile>
  <tile id="19">
   <properties>
-   <property name="enemy" value="bugSmall"/>
+   <property name="enemy" value="tanky"/>
   </properties>
  </tile>
  <tile id="20">
   <properties>
-   <property name="enemy" value="bugSmall"/>
+   <property name="enemy" value="tanky"/>
   </properties>
  </tile>
  <tile id="21">
   <properties>
-   <property name="enemy" value="bugBig"/>
+   <property name="enemy" value="tank"/>
   </properties>
  </tile>
  <tile id="22">
   <properties>
-   <property name="enemy" value="bugBig"/>
+   <property name="enemy" value="tank"/>
   </properties>
  </tile>
  <tile id="23">
   <properties>
-   <property name="enemy" value="bugBig"/>
+   <property name="enemy" value="tank"/>
   </properties>
  </tile>
  <tile id="24">
