@@ -2,8 +2,6 @@ package com.sanvalero.aa2pmdm.manager;
 
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
-import java.util.Collections;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
