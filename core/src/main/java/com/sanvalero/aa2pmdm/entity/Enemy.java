@@ -25,7 +25,14 @@ public abstract class Enemy extends Character {
         this.isVisible = true;
     }
 
-    public abstract void update(float deltaTime);
+    public abstract void update(float deltaTime, Player player);
 
     public abstract void collideWithPlayer(Player player);
+
+    public float getDistanceToPlayer(Player player) {
+        float distanceX = Math.abs(player.getPosition().x - this.position.x);
+        float distanceY = Math.abs(player.getPosition().y - this.position.y);
+        float distance = (float) Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+        return distance;
+    }
 }

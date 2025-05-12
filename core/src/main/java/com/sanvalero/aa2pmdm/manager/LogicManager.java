@@ -204,7 +204,7 @@ public class LogicManager {
             item.update(delta);
         }
         for (Enemy enemy : enemies) {
-            enemy.update(delta);
+            enemy.update(delta, player);
         }
     }
 }

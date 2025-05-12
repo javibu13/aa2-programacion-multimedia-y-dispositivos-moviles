@@ -169,8 +169,12 @@ public class Player extends Character {
             isJumping = true;
             isGrounded = false;
             velocity.y = PLAYER_JUMP_SPEED;
-            R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.3f, 1.5f, 0.0f);
+            playJumpSound();
         }
+    }
+
+    public void playJumpSound() {
+        R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.3f, 1.5f, 0.0f);
     }
 
     public void checkGroundCollisions() {
