@@ -146,7 +146,7 @@ public class Player extends Character {
             // Stop footstep sound
             R.getSound(PLAYER_FOOTSTEPS_SOUND).stop();
         }
-        velocity.y -= GRAVITY;
+        velocity.y -= GRAVITY * delta; // Apply gravity
         if (velocity.y < -PLAYER_JUMP_SPEED) {
             velocity.y = -PLAYER_JUMP_SPEED;
         }
