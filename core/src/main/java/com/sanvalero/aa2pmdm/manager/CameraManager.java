@@ -5,6 +5,7 @@ import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
 import com.sanvalero.aa2pmdm.entity.Player;
 
 import lombok.Data;
@@ -79,5 +80,9 @@ public class CameraManager {
 
     public void update() {
         camera.update();
+    }
+
+    public Vector2 getCameraBottomLeft() {
+        return new Vector2(camera.position.x - (camera.viewportWidth / 2), camera.position.y - (camera.viewportHeight / 2));
     }
 }

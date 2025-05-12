@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Ally;
 import com.sanvalero.aa2pmdm.entity.Coin;
+import com.sanvalero.aa2pmdm.entity.Enemy;
 import com.sanvalero.aa2pmdm.entity.Exit;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Key;
@@ -26,6 +27,7 @@ public class LogicManager {
     private int level;
     public Player player;
     public Array<Item> items;
+    public Array<Enemy> enemies;
     public Exit exit;
     public TiledMapTileLayer groundLayer;
     public TiledMapTileLayer deathLayer;
@@ -183,6 +185,9 @@ public class LogicManager {
         // // Update items
         for (Item item : items) {
             item.update(delta);
+        }
+        for (Enemy enemy : enemies) {
+            enemy.update(delta);
         }
     }
 }

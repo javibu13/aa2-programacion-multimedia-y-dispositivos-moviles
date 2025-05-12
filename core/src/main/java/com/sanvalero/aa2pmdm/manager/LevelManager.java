@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.entity.Ally;
 import com.sanvalero.aa2pmdm.entity.Coin;
 import com.sanvalero.aa2pmdm.entity.Exit;
+import com.sanvalero.aa2pmdm.entity.Fly;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
 import com.sanvalero.aa2pmdm.entity.Spaceship;
@@ -68,7 +69,7 @@ public class LevelManager {
         logicManager.deathLayer = deathLayer;
         deathLayer.setVisible(false); // Hide death layer
         itemLayer = levelMap.getLayers().get("items");
-        // enemyLayer = levelMap.getLayers().get("enemies");
+        enemyLayer = getEnemyLayer();
 
         initializeLevel();
     }
@@ -97,7 +98,7 @@ public class LevelManager {
         logicManager.player = new Player(new Vector2(mapPlayerX, mapPlayerY));
         logicManager.exit = new Exit(new Vector2(mapExitX, mapExitY));
         logicManager.items = new Array<>();
-        // ...
+        logicManager.enemies = new Array<>();
         loadItems();
         loadEnemies();
     }
@@ -117,6 +118,23 @@ public class LevelManager {
             levelMap.getLayers().add(deathLayer);
         }
         return deathLayer;
+    }
+
+    private MapLayer getEnemyLayer() {
+        enemyLayer = levelMap.getLayers().get("enemies");
+        if (enemyLayer == null) {
+            // Get properties of the levelMap
+            MapProperties props = levelMap.getProperties();
+            int mapWidth = props.get("width", Integer.class);
+            int mapHeight = props.get("height", Integer.class);
+            int tileWidth = props.get("tilewidth", Integer.class);
+            int tileHeight = props.get("tileheight", Integer.class);
+            // Create a new and empty enemy layer
+            enemyLayer = new TiledMapTileLayer(mapWidth, mapHeight, tileWidth, tileHeight);
+            enemyLayer.setName("enemies");
+            levelMap.getLayers().add(enemyLayer);
+        }
+        return enemyLayer;
     }
 
     private void loadItems() {
@@ -149,6 +167,24 @@ public class LevelManager {
     }
 
     private void loadEnemies() {
+        for (MapObject mapObject : enemyLayer.getObjects()) {
+            if (!((TiledMapTileMapObject) mapObject).getTile().getProperties().containsKey("enemy")) {
+                System.out.println("No 'enemy' type property found in mapObject: " + mapObject.getName());
+                continue;
+            }
+            String type = ((TiledMapTileMapObject) mapObject).getTile().getProperties().get("enemy", String.class);
+            float x = mapObject.getProperties().get("x", Float.class);
+            float y = mapObject.getProperties().get("y", Float.class);
+            switch (type) {
+                case "fly":
+                    logicManager.enemies.add(new Fly(new Vector2(x, y)));
+                    System.out.println("Fly enemy added at: " + x + ", " + y);
+                    break;
+                default:
+                    System.out.println("Unknown enemy type: " + type);
+                    break;
+            }
+        }
     }
 
     public static Array<Rectangle> getGroundTiles(Vector2 playerPosition) {

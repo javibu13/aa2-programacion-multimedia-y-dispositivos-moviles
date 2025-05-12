@@ -1,8 +1,12 @@
 package com.sanvalero.aa2pmdm.entity;
 
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_ANIMATION_SPEED;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.manager.R;
 
 public class Fly extends Enemy {
@@ -20,7 +24,13 @@ public class Fly extends Enemy {
     }
 
     public void setAnimations() {
-        animation = new Animation<>(0.1f, R.getRegions("enemy_fly"));
+        Array<AtlasRegion> sprites = R.getRegions("enemy_fly");
+        Array<TextureRegion> animationSprites = new Array<>();
+        animationSprites.add(sprites.get(0));
+        animationSprites.add(sprites.get(1));
+        animationSprites.add(sprites.get(2));
+        animationSprites.add(sprites.get(1));
+        animation = new Animation<>(ENEMY_FLY_ANIMATION_SPEED, animationSprites);
     }
 
     public void update(float deltaTime) {
