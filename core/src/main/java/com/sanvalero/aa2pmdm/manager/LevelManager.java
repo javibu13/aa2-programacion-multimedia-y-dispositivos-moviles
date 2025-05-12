@@ -177,7 +177,13 @@ public class LevelManager {
             float y = mapObject.getProperties().get("y", Float.class);
             switch (type) {
                 case "fly":
-                    logicManager.enemies.add(new Fly(new Vector2(x, y)));
+                    // Check if the distance property exists
+                    if (!mapObject.getProperties().containsKey("distance")) {
+                        System.out.println("No 'distance' property found for fly enemy at: " + x + ", " + y + ". Skipping.");
+                        continue;
+                    }
+                    int distance = mapObject.getProperties().get("distance", Integer.class);
+                    logicManager.enemies.add(new Fly(new Vector2(x, y), distance));
                     System.out.println("Fly enemy added at: " + x + ", " + y);
                     break;
                 default:

@@ -97,6 +97,7 @@ public class LogicManager {
 
     public void manageCollision() {
         manageItemCollision();
+        manageEnemyCollision();
         manageExitCollision();
     }
 
@@ -147,6 +148,22 @@ public class LogicManager {
         // Remove items marked for deletion to avoid concurrent issues, memory leaks and item skipping
         for (Item item : itemsToDelete) { // It could be replaced by a inverted for loop to impove performance
             items.removeValue(item, true);
+        }
+    }
+
+    public void manageEnemyCollision() {
+        // Check for collisions between player and enemies
+        for (Enemy enemy : enemies) {
+            if (enemy.isActive() && player.getItemCollisionShape().overlaps(enemy.getCollisionShape())) {
+                enemy.collideWithPlayer(player);
+                System.out.println("Player collided with enemy!");
+                if (player.getHealth() <= 0) {
+                    // Player is dead
+                    System.out.println("Game Over!");
+                    // Set the game over screen
+                    game.setScreen(new GameOverScreen(game));
+                }
+            }
         }
     }
 

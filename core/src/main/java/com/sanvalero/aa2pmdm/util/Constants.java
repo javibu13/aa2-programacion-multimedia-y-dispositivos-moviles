@@ -27,4 +27,5 @@ public class Constants {
     public static final float COIN_ANIMATION_SPEED = 0.2f;
     // Enemy constants
     public static final float ENEMY_FLY_ANIMATION_SPEED = 0.15f;
+    public static final float ENEMY_FLY_MOVE_SPEED = 70f;
 }

@@ -26,4 +26,6 @@ public abstract class Enemy extends Character {
     }
 
     public abstract void update(float deltaTime);
+
+    public abstract void collideWithPlayer(Player player);
 }

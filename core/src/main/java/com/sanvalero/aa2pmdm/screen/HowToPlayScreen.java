@@ -65,7 +65,7 @@ public class HowToPlayScreen implements Screen {
                 + "2. Press Space key or Up arrow key to jump.\n\n"
                 + "3. Collect coins to increase score.\n\n"
                 + "4. Get the key to open the exit door.\n\n"
-                + "5. Avoid enemies and obstacles.\n\n"
+                + "5. Be careful with enemies and obstacles.\n\n"
                 + "6. Reach the exit to complete the level.\n\nESCAPE key or P key to pause the game.\n\n",
                 new LabelStyle(textFont, Color.WHITE));
         instructions.setColor(Color.WHITE);

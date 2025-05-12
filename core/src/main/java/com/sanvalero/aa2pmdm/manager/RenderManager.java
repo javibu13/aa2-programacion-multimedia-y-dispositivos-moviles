@@ -185,7 +185,7 @@ public class RenderManager {
 
         // Draw UI stage
         if (logicManager.imageLayer != null && logicManager.imageLayer.isVisible()) {
-            if (Gdx.input.getInputProcessor() == null) {
+            if (Gdx.input.getInputProcessor() == null || Gdx.input.getInputProcessor() != uiStage) {
                 Gdx.input.setInputProcessor(uiStage);
             }
             uiStage.act(Gdx.graphics.getDeltaTime());
