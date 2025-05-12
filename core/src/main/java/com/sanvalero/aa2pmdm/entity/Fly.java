@@ -106,9 +106,8 @@ public class Fly extends Enemy {
     }
 
     public void collideWithPlayer(Player player) {
-        System.out.println("Fly collided with player!");
-        if (isActive && player.isActive() && player.collisionShapeBottom.overlaps(collisionShape)) { // Stop player movement
-            System.out.println("Player collided with Fly! so... Jump!");
+        if (isActive && player.isActive() && player.collisionShapeBottom.overlaps(collisionShape)) {
+            // Make player jump
             player.playJumpSound();
             player.setGrounded(false);
             player.setJumping(true);
