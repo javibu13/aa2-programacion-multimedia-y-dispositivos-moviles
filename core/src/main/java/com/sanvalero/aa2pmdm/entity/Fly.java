@@ -15,7 +15,7 @@ import com.sanvalero.aa2pmdm.manager.R;
 public class Fly extends Enemy {
     private int distance; // Distance to move
     private boolean moveRight = true; // Direction of movement
-    private Animation<TextureRegion> animation;
+    private Animation<TextureRegion> animationRight, animationLeft;
     private float stateTime = 0f;
 
     public Fly(Vector2 position, int tileDistance) {
@@ -37,13 +37,27 @@ public class Fly extends Enemy {
     }
 
     private void setAnimations() {
-        Array<AtlasRegion> sprites = R.getRegions("enemy_fly");
-        Array<TextureRegion> animationSprites = new Array<>();
-        animationSprites.add(sprites.get(0));
-        animationSprites.add(sprites.get(1));
-        animationSprites.add(sprites.get(2));
-        animationSprites.add(sprites.get(1));
-        animation = new Animation<>(ENEMY_FLY_ANIMATION_SPEED, animationSprites);
+        // Set animations using the move right animation and flipping it for the left animation
+        Array<AtlasRegion> flyRegionsRight = R.getRegions("enemy_fly");
+        Array<AtlasRegion> flyRegionsLeft = new Array<>();
+        for (AtlasRegion region : flyRegionsRight) {
+            AtlasRegion flippedRegion = new AtlasRegion(region);
+            flippedRegion.flip(true, false);
+            flyRegionsLeft.add(flippedRegion);
+        }
+
+        Array<TextureRegion> animationSpritesRight = new Array<>();
+        Array<TextureRegion> animationSpritesLeft = new Array<>();
+        animationSpritesRight.add(flyRegionsRight.get(0));
+        animationSpritesRight.add(flyRegionsRight.get(1));
+        animationSpritesRight.add(flyRegionsRight.get(2));
+        animationSpritesRight.add(flyRegionsRight.get(1));
+        animationSpritesLeft.add(flyRegionsLeft.get(0));
+        animationSpritesLeft.add(flyRegionsLeft.get(1));
+        animationSpritesLeft.add(flyRegionsLeft.get(2));
+        animationSpritesLeft.add(flyRegionsLeft.get(1));
+        animationRight = new Animation<>(ENEMY_FLY_ANIMATION_SPEED, animationSpritesRight);
+        animationLeft = new Animation<>(ENEMY_FLY_ANIMATION_SPEED, animationSpritesLeft);
     }
 
     public void update(float deltaTime) {
@@ -51,14 +65,15 @@ public class Fly extends Enemy {
             return; // Skip update if not active
         }
         stateTime += deltaTime;
-        currentFrame = animation.getKeyFrame(stateTime, true);
-
+        
         if (moveRight) {
+            currentFrame = animationRight.getKeyFrame(stateTime, true);
             position.x += velocity.x * deltaTime;
             if (position.x >= startPosition.x + distance) {
                 moveRight = false; // Change direction
             }
         } else {
+            currentFrame = animationLeft.getKeyFrame(stateTime, true);
             position.x -= velocity.x * deltaTime;
             if (position.x <= startPosition.x) {
                 moveRight = true; // Change direction
