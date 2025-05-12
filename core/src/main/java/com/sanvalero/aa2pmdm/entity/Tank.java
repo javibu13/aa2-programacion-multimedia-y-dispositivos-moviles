@@ -53,7 +53,7 @@ public class Tank extends Enemy {
         moveAnimationLeft = new Animation<>(ENEMY_TANK_ANIMATION_SPEED, moveRegionsLeft);
     }
 
-    public void update(float deltaTime) {
+    public void update(float deltaTime, Player player) {
         if (!isActive) {
             if (isVisible && deathTime < ENEMY_TANK_DEATH_TIME) {
                 deathTime += deltaTime;
@@ -89,6 +89,7 @@ public class Tank extends Enemy {
             return; // Skip collision if not active
         }
         if (player.collisionShapeBottom.overlaps(collisionShapeTop)) { // Stop player movement
+            player.playJumpSound();
             player.setGrounded(false);
             player.setJumping(true);
             player.setVelocityY(PLAYER_JUMP_SPEED);
