@@ -3,7 +3,7 @@ public class Constants {
     // Game constants
     public static final String GAME_NAME = "AA2 PMDM";
     public static final int TILE_SIZE = 18;
-    public static final float GRAVITY = 10f;
+    public static final float GRAVITY = 600f;
     public static final float BACKGROUND_MUSIC_VOLUME = 0.25f;
     // Sound constants
     public static final String GAME_COMPLETE_SOUND = "game_complete.ogg";
@@ -31,4 +31,6 @@ public class Constants {
     public static final float ENEMY_TANK_ANIMATION_SPEED = 0.1f;
     public static final float ENEMY_TANK_MOVE_SPEED = 150f;
     public static final float ENEMY_TANK_DEATH_TIME = 5f;   // seconds
+    public static final float ENEMY_FISH_ANIMATION_SPEED = 0.1f;
+    public static final float ENEMY_FISH_JUMP_SPEED = 250f;
 }
