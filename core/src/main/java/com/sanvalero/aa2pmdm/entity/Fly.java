@@ -89,7 +89,7 @@ public class Fly extends Enemy {
             // Calculate distance to player to adjust sound volume
             float distanceToPlayer = getDistanceToPlayer(player);
             float volumeMultiplier = distanceToVolumeMultiplier(distanceToPlayer);        
-            R.getSound(ENEMY_FLY_WING_SOUND).play(Main.getSoundVolume() * 0.5f * volumeMultiplier, 1.0f, 0.0f);
+            R.getSound(ENEMY_FLY_WING_SOUND).play(Main.getSoundVolume() * 0.6f * volumeMultiplier, 1.0f, 0.0f);
             wingTimer = 0f;
         }
         

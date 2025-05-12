@@ -5,6 +5,8 @@ import static com.sanvalero.aa2pmdm.util.Constants.COIN_COLLECT_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_WING_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_FOOTSTEP_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_DEATH_SOUND;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FISH_WATER_SOUND;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FISH_BITE_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.GAME_COMPLETE_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.KEY_COLLECT_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_FOOTSTEPS_SOUND;
@@ -51,6 +53,8 @@ public class R {
         assetManager.load(SOUNDS + File.separator + ENEMY_FLY_WING_SOUND, Sound.class);
         assetManager.load(SOUNDS + File.separator + ENEMY_TANK_FOOTSTEP_SOUND, Sound.class);
         assetManager.load(SOUNDS + File.separator + ENEMY_TANK_DEATH_SOUND, Sound.class);
+        assetManager.load(SOUNDS + File.separator + ENEMY_FISH_WATER_SOUND, Sound.class);
+        assetManager.load(SOUNDS + File.separator + ENEMY_FISH_BITE_SOUND, Sound.class);
         // Load all music
         assetManager.load(MUSIC + File.separator + BACKGROUND_MUSIC, Music.class);
     }
