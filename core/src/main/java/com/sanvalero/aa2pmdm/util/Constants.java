@@ -15,6 +15,8 @@ public class Constants {
     public static final String COIN_COLLECT_SOUND = "coin.mp3";
     public static final String KEY_COLLECT_SOUND = "key.wav";
     public static final String ENEMY_FLY_WING_SOUND = "enemy_fly_wing.ogg";
+    public static final String ENEMY_TANK_FOOTSTEP_SOUND = "enemy_tank_footstep.ogg";
+    public static final String ENEMY_TANK_DEATH_SOUND = "enemy_tank_death.ogg";
     // Music constants
     public static final String BACKGROUND_MUSIC = "music.mp3";
     // Player constants
@@ -33,6 +35,7 @@ public class Constants {
     public static final float ENEMY_TANK_ANIMATION_SPEED = 0.1f;
     public static final float ENEMY_TANK_MOVE_SPEED = 150f;
     public static final float ENEMY_TANK_DEATH_TIME = 5f;   // seconds
+    public static final float ENEMY_TANK_FOOTSTEP_INTERVAL = 0.1f;
     public static final float ENEMY_FISH_JUMP_SPEED = 350f;
     public static final float ENEMY_FISH_ANIMATION_SPEED = 0.1f;
 }

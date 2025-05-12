@@ -1,17 +1,22 @@
 package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_ANIMATION_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_DEATH_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_MOVE_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_DEATH_TIME;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_FOOTSTEP_INTERVAL;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_FOOTSTEP_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.R;
 
 public class Tank extends Enemy {
@@ -20,6 +25,7 @@ public class Tank extends Enemy {
     private Animation<TextureRegion> moveAnimationRight, moveAnimationLeft;
     private float stateTime = 0f;
     private float deathTime = 0f;
+    private float footstepTimer = 0f;
 
     public Tank(Vector2 position, int tileDistance) {
         super(R.getRegions("enemy_tank_move").get(0), position);
@@ -64,7 +70,9 @@ public class Tank extends Enemy {
             }
             return; // Skip update if not active
         }
+
         stateTime += deltaTime;
+        footstepTimer += deltaTime;
 
         if (moveRight) {
             position.x += velocity.x * deltaTime;
@@ -79,6 +87,17 @@ public class Tank extends Enemy {
                 moveRight = true; // Change direction
             }
         }
+
+        // Play footstep sound
+        if (footstepTimer >= ENEMY_TANK_FOOTSTEP_INTERVAL) {
+            // Calculate distance to player to adjust sound volume
+            float distanceToPlayer = getDistanceToPlayer(player);
+            float volumeMultiplier = distanceToVolumeMultiplier(distanceToPlayer);
+            // Play footstep sound with adjusted volume and random pitch between 1f and 1.3f
+            R.getSound(ENEMY_TANK_FOOTSTEP_SOUND).play(Main.getSoundVolume() * 0.2f * volumeMultiplier, 1.0f + (MathUtils.random(0.0f, 0.3f)), 0.0f);
+            footstepTimer = 0f;
+        }
+
         // Update collision shape position
         collisionShape.setPosition(position.x, position.y);
         collisionShapeTop.setPosition(position.x + (currentFrame.getRegionWidth()/16f), position.y + (currentFrame.getRegionHeight()/1.1f) - (currentFrame.getRegionHeight()/8f));
@@ -94,6 +113,7 @@ public class Tank extends Enemy {
             player.setJumping(true);
             player.setVelocityY(PLAYER_JUMP_SPEED);
             isActive = false; // Deactivate tank
+            R.getSound(ENEMY_TANK_DEATH_SOUND).play(Main.getSoundVolume() * 0.45f); // Play death sound
             currentFrame = R.getRegions("enemy_tank_death").get(0); // Set death sprite
         } else if (player.getItemCollisionShape().overlaps(collisionShape)) { // Hurt player
             player.hurt(1); // Hurt player

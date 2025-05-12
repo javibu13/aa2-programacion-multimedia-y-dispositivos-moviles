@@ -37,8 +37,7 @@ public class Fish extends Enemy {
     private void initFish(Vector2 velocity) {
         this.startVelocity = velocity.cpy();
         this.velocity = velocity;
-        // TODO: Set position and size of the collision shape
-        collisionShape.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+        collisionShape = new Rectangle(position.x + (currentFrame.getRegionWidth()/16*5), position.y + (currentFrame.getRegionHeight()/16*3), currentFrame.getRegionWidth()/2f, currentFrame.getRegionHeight()/1.6f);
     }
 
     private void setAnimations() {
@@ -85,8 +84,7 @@ public class Fish extends Enemy {
         }
 
         // Update collision shape position
-        collisionShape.setPosition(position.x, position.y);
-        collisionShape.setSize(currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+        collisionShape.setPosition(position.x + (currentFrame.getRegionWidth()/16*5), position.y + (currentFrame.getRegionHeight()/16*3));
     }
 
     public void collideWithPlayer(Player player) {

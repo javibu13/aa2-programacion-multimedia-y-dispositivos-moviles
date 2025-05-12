@@ -105,6 +105,7 @@ public class Player extends Character {
     }
     
     public void update(float delta) {
+        System.out.println("Player (" + isActive + ") position: " + position);
         if (!isActive) {
             return; // Player is not active
         }

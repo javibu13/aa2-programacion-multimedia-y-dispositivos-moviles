@@ -88,15 +88,7 @@ public class Fly extends Enemy {
         if (wingTimer >= ENEMY_FLY_WING_INTERVAL) {
             // Calculate distance to player to adjust sound volume
             float distanceToPlayer = getDistanceToPlayer(player);
-            int tileDistance = (int) (distanceToPlayer / TILE_SIZE);
-            // If tileDistance is 32 or more, set volume multiplayer to 0.1f
-            // If tileDistance is less than 4, set volume multiplayer to 1.0f
-            float volumeMultiplier = 1.0f - (tileDistance / 32f);
-            if (tileDistance < 4) {
-                volumeMultiplier = 1.0f;
-            } else if (tileDistance >= 32) {
-                volumeMultiplier = 0.1f;
-            }            
+            float volumeMultiplier = distanceToVolumeMultiplier(distanceToPlayer);        
             R.getSound(ENEMY_FLY_WING_SOUND).play(Main.getSoundVolume() * 0.5f * volumeMultiplier, 1.0f, 0.0f);
             wingTimer = 0f;
         }
