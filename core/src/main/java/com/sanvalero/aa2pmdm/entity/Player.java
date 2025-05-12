@@ -105,6 +105,7 @@ public class Player extends Character {
     }
     
     public void update(float delta) {
+        System.out.println("Player (" + isActive + ") position: " + position);
         if (!isActive) {
             return; // Player is not active
         }
@@ -146,7 +147,7 @@ public class Player extends Character {
             // Stop footstep sound
             R.getSound(PLAYER_FOOTSTEPS_SOUND).stop();
         }
-        velocity.y -= GRAVITY;
+        velocity.y -= GRAVITY * delta; // Apply gravity
         if (velocity.y < -PLAYER_JUMP_SPEED) {
             velocity.y = -PLAYER_JUMP_SPEED;
         }
@@ -169,8 +170,12 @@ public class Player extends Character {
             isJumping = true;
             isGrounded = false;
             velocity.y = PLAYER_JUMP_SPEED;
-            R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.3f, 1.5f, 0.0f);
+            playJumpSound();
         }
+    }
+
+    public void playJumpSound() {
+        R.getSound(PLAYER_JUMP_SOUND).play(Main.getSoundVolume() * 0.3f, 1.5f, 0.0f);
     }
 
     public void checkGroundCollisions() {

@@ -34,6 +34,10 @@ public class GameScreen implements Screen {
         game.setScreen(new LeaderboardScreen(game));
     }
 
+    public boolean isPause() {
+        return game.pause;
+    }
+
     @Override
     public void show() {
         game.pause = false;

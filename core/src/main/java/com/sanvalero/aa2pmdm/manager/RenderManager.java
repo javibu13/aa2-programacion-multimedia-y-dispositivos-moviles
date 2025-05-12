@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -30,11 +31,13 @@ public class RenderManager {
     private CameraManager cameraManager;
     private Batch batch;
     private OrthogonalTiledMapRenderer mapRenderer;
-    // private OrthographicCamera camera;
+    private MapLayer waterLayer;
+    private int waterLayerIndex;
     private ShapeRenderer shapeRenderer;
     // UI elements - Game Over
     private Stage uiStage;
     private VisTextField nameField;
+    private GameScreen gameScreen;
 
 
     public RenderManager(LogicManager logicManager, CameraManager cameraManager, TiledMap levelMap, GameScreen gameScreen) {
@@ -43,14 +46,15 @@ public class RenderManager {
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap);
         this.batch = mapRenderer.getBatch();
 
-        // camera = new OrthographicCamera();
-        // camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
-        // camera.update();
+        this.waterLayer = levelMap.getLayers().get("water");
+        this.waterLayerIndex = levelMap.getLayers().getIndex("water");
+        
         this.cameraManager = cameraManager;
 
         shapeRenderer = new ShapeRenderer();
 
         // Set up the UI stage
+        this.gameScreen = gameScreen;
         uiStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(null); // Disable input for the UI stage until is shown
         VisTable table = new VisTable(true);
@@ -104,7 +108,6 @@ public class RenderManager {
         if (logicManager.player.isVisible()) {
             batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         }
-        // ...
         
         // Draw HUD elements
         if (logicManager.getLevel() >= 0) {
@@ -134,6 +137,11 @@ public class RenderManager {
             // // Level
         }
         batch.end();
+
+        // Draw foreground layer (water)
+        if (waterLayer != null) {
+            mapRenderer.render(new int[] {waterLayerIndex});
+        }
         
         // Draw player's collision shapes for debugging 
         if (logicManager.isDebugMode()) {
@@ -187,7 +195,7 @@ public class RenderManager {
 
         // Draw UI stage
         if (logicManager.imageLayer != null && logicManager.imageLayer.isVisible()) {
-            if (Gdx.input.getInputProcessor() == null || Gdx.input.getInputProcessor() != uiStage) {
+            if (!gameScreen.isPause() && (Gdx.input.getInputProcessor() == null || Gdx.input.getInputProcessor() != uiStage)) {
                 Gdx.input.setInputProcessor(uiStage);
             }
             uiStage.act(Gdx.graphics.getDeltaTime());

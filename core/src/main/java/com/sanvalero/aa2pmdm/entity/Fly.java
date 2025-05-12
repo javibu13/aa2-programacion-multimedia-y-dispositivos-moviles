@@ -2,6 +2,8 @@ package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_MOVE_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_WING_SOUND;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_WING_INTERVAL;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
@@ -10,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.manager.R;
 
 public class Fly extends Enemy {
@@ -17,6 +20,7 @@ public class Fly extends Enemy {
     private boolean moveRight = true; // Direction of movement
     private Animation<TextureRegion> animationRight, animationLeft;
     private float stateTime = 0f;
+    private float wingTimer = 0f;
 
     public Fly(Vector2 position, int tileDistance) {
         super(R.getRegions("enemy_fly").get(0), position);
@@ -60,11 +64,12 @@ public class Fly extends Enemy {
         animationLeft = new Animation<>(ENEMY_FLY_ANIMATION_SPEED, animationSpritesLeft);
     }
 
-    public void update(float deltaTime) {
+    public void update(float deltaTime, Player player) {
         if (!isActive) {
             return; // Skip update if not active
         }
         stateTime += deltaTime;
+        wingTimer += deltaTime;
         
         if (moveRight) {
             currentFrame = animationRight.getKeyFrame(stateTime, true);
@@ -79,14 +84,23 @@ public class Fly extends Enemy {
                 moveRight = true; // Change direction
             }
         }
+        // Play wing sound
+        if (wingTimer >= ENEMY_FLY_WING_INTERVAL) {
+            // Calculate distance to player to adjust sound volume
+            float distanceToPlayer = getDistanceToPlayer(player);
+            float volumeMultiplier = distanceToVolumeMultiplier(distanceToPlayer);        
+            R.getSound(ENEMY_FLY_WING_SOUND).play(Main.getSoundVolume() * 0.6f * volumeMultiplier, 1.0f, 0.0f);
+            wingTimer = 0f;
+        }
+        
         // Update collision shape position
         updateCollisionShapes();
     }
 
     public void collideWithPlayer(Player player) {
-        System.out.println("Fly collided with player!");
-        if (isActive && player.isActive() && player.collisionShapeBottom.overlaps(collisionShape)) { // Stop player movement
-            System.out.println("Player collided with Fly! so... Jump!");
+        if (isActive && player.isActive() && player.collisionShapeBottom.overlaps(collisionShape)) {
+            // Make player jump
+            player.playJumpSound();
             player.setGrounded(false);
             player.setJumping(true);
             player.setVelocityY(PLAYER_JUMP_SPEED);

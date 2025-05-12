@@ -1,5 +1,6 @@
 package com.sanvalero.aa2pmdm.manager;
 
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FISH_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
 import java.io.File;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.entity.Ally;
 import com.sanvalero.aa2pmdm.entity.Coin;
 import com.sanvalero.aa2pmdm.entity.Exit;
+import com.sanvalero.aa2pmdm.entity.Fish;
 import com.sanvalero.aa2pmdm.entity.Fly;
 import com.sanvalero.aa2pmdm.entity.Key;
 import com.sanvalero.aa2pmdm.entity.Player;
@@ -196,6 +198,16 @@ public class LevelManager {
                     }
                     distance = mapObject.getProperties().get("distance", Integer.class);
                     logicManager.enemies.add(new Tank(new Vector2(x, y), distance));
+                    break;
+                case "fish":
+                    // Check if the jumpSpeed property exists
+                    float jumpSpeed = ENEMY_FISH_JUMP_SPEED;
+                    if (mapObject.getProperties().containsKey("jumpSpeed")) {
+                        jumpSpeed = mapObject.getProperties().get("jumpSpeed", Float.class);
+                    } else {
+                        System.out.println("No 'jumpSpeed' property found for fish enemy at: " + x + ", " + y + ". Using default.");
+                    }
+                    logicManager.enemies.add(new Fish(new Vector2(x, y), new Vector2(0f, jumpSpeed)));
                     break;
                 default:
                     System.out.println("Unknown enemy type: " + type);
