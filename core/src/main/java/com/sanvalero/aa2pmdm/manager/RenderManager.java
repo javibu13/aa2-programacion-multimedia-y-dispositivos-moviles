@@ -2,11 +2,14 @@ package com.sanvalero.aa2pmdm.manager;
 
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
+import java.util.Collections;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -30,7 +33,8 @@ public class RenderManager {
     private CameraManager cameraManager;
     private Batch batch;
     private OrthogonalTiledMapRenderer mapRenderer;
-    // private OrthographicCamera camera;
+    private MapLayer waterLayer;
+    private int waterLayerIndex;
     private ShapeRenderer shapeRenderer;
     // UI elements - Game Over
     private Stage uiStage;
@@ -43,9 +47,9 @@ public class RenderManager {
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap);
         this.batch = mapRenderer.getBatch();
 
-        // camera = new OrthographicCamera();
-        // camera.setToOrtho(false, TILE_SIZE * 32, TILE_SIZE * 16);
-        // camera.update();
+        this.waterLayer = levelMap.getLayers().get("water");
+        this.waterLayerIndex = levelMap.getLayers().getIndex("water");
+        
         this.cameraManager = cameraManager;
 
         shapeRenderer = new ShapeRenderer();
@@ -104,7 +108,6 @@ public class RenderManager {
         if (logicManager.player.isVisible()) {
             batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
         }
-        // ...
         
         // Draw HUD elements
         if (logicManager.getLevel() >= 0) {
@@ -134,6 +137,11 @@ public class RenderManager {
             // // Level
         }
         batch.end();
+
+        // Draw foreground layer (water)
+        if (waterLayer != null) {
+            mapRenderer.render(new int[] {waterLayerIndex});
+        }
         
         // Draw player's collision shapes for debugging 
         if (logicManager.isDebugMode()) {
