@@ -4,7 +4,6 @@ import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_MOVE_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_DEATH_TIME;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
-import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_MOVE_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
