@@ -3,7 +3,6 @@ package com.sanvalero.aa2pmdm.entity;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_MOVE_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_WING_SOUND;
-import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_WING_INTERVAL;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.TILE_SIZE;
