@@ -19,6 +19,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.sanvalero.aa2pmdm.Main;
+import com.sanvalero.aa2pmdm.entity.Enemy;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Spaceship;
 import com.sanvalero.aa2pmdm.screen.GameScreen;
@@ -94,6 +95,11 @@ public class RenderManager {
                 }
             }
         }
+        for (Enemy enemy : logicManager.enemies) {
+            if (enemy.isVisible()) {
+                batch.draw(enemy.getCurrentFrame(), enemy.getPosition().x, enemy.getPosition().y);
+            }
+        }
         batch.draw(logicManager.exit.getCurrentFrame(), logicManager.exit.getPosition().x, logicManager.exit.getPosition().y);
         if (logicManager.player.isVisible()) {
             batch.draw(logicManager.player.getCurrentFrame(), logicManager.player.getPosition().x, logicManager.player.getPosition().y);
@@ -102,28 +108,29 @@ public class RenderManager {
         
         // Draw HUD elements
         if (logicManager.getLevel() >= 0) {
+            Vector2 cameraPositionBottomLeft = cameraManager.getCameraBottomLeft();
             float leftPadding = 4f;
             float topPadding = 4f;
             // // Lives
             for (int i = 0; i < logicManager.player.getMaxHealth(); i++) {
                 if (i < logicManager.player.getHealth()) {
-                    batch.draw(R.getRegions("heart").get(1), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+                    batch.draw(R.getRegions("heart").get(1), cameraPositionBottomLeft.x + leftPadding + (i * 20f), cameraPositionBottomLeft.y + camera.viewportHeight - 20f - topPadding, 20f, 20f);
                 } else {
-                    batch.draw(R.getRegions("heart").get(0), leftPadding + (i * 20f), camera.viewportHeight - 20f - topPadding, 20f, 20f);
+                    batch.draw(R.getRegions("heart").get(0), cameraPositionBottomLeft.x + leftPadding + (i * 20f), cameraPositionBottomLeft.y + camera.viewportHeight - 20f - topPadding, 20f, 20f);
                 }
             }
             // // Score
-            batch.draw(R.getTexture("coin"), leftPadding, camera.viewportHeight - 40f - topPadding, 20f, 20f); 
+            batch.draw(R.getTexture("coin"), cameraPositionBottomLeft.x + leftPadding, cameraPositionBottomLeft.y + camera.viewportHeight - 40f - topPadding, 20f, 20f); 
             String score = String.valueOf(logicManager.player.getScore());
             for (int i = 0; i < score.length(); i++) {
                 char digit = score.charAt(i);
                 // Transform the character to an integer
                 int digitValue = digit - '0';
-                batch.draw(R.getRegions("number").get(digitValue), leftPadding + 20f + (i * 20f), camera.viewportHeight - 40f - topPadding, 20f, 20f);
+                batch.draw(R.getRegions("number").get(digitValue), cameraPositionBottomLeft.x + leftPadding + 20f + (i * 20f), cameraPositionBottomLeft.y + camera.viewportHeight - 40f - topPadding, 20f, 20f);
             }
             // // Key
             int keySpriteIndex = logicManager.player.isKey() ? 1 : 0;
-            batch.draw(R.getRegions("key").get(keySpriteIndex), leftPadding + 3f, camera.viewportHeight - 60f - topPadding, 20f, 20f);
+            batch.draw(R.getRegions("key").get(keySpriteIndex), cameraPositionBottomLeft.x + leftPadding + 3f, cameraPositionBottomLeft.y + camera.viewportHeight - 60f - topPadding, 20f, 20f);
             // // Level
         }
         batch.end();
@@ -155,6 +162,15 @@ public class RenderManager {
                     shapeRenderer.rect(item.getCollisionShape().x, item.getCollisionShape().y, item.getCollisionShape().width, item.getCollisionShape().height);
                 }
             }
+            // ENEMIES
+            for (Enemy enemy : logicManager.enemies) {
+                if (enemy.isActive()) {
+                    shapeRenderer.setColor(Color.BLACK);
+                    shapeRenderer.rect(enemy.getCollisionShape().x, enemy.getCollisionShape().y, enemy.getCollisionShape().width, enemy.getCollisionShape().height);
+                    shapeRenderer.setColor(Color.BLUE);
+                    shapeRenderer.rect(enemy.collisionShapeTop.x, enemy.collisionShapeTop.y, enemy.collisionShapeTop.width, enemy.collisionShapeTop.height);
+                }
+            }
             // CameraLimits
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.rect(cameraManager.getCameraLeftLimit(), camera.position.y - (cameraManager.getCAMERA_HORIZONTAL_SAFE_ZONE()*TILE_SIZE), cameraManager.getCAMERA_HORIZONTAL_SAFE_ZONE()*2*TILE_SIZE, cameraManager.getCAMERA_VERTICAL_SAFE_ZONE()*2*TILE_SIZE);
@@ -171,7 +187,7 @@ public class RenderManager {
 
         // Draw UI stage
         if (logicManager.imageLayer != null && logicManager.imageLayer.isVisible()) {
-            if (Gdx.input.getInputProcessor() == null) {
+            if (Gdx.input.getInputProcessor() == null || Gdx.input.getInputProcessor() != uiStage) {
                 Gdx.input.setInputProcessor(uiStage);
             }
             uiStage.act(Gdx.graphics.getDeltaTime());

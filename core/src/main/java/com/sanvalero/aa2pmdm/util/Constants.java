@@ -18,11 +18,17 @@ public class Constants {
     public static final String BACKGROUND_MUSIC = "music.mp3";
     // Player constants
     public static final float PLAYER_MOVE_SPEED = 100f;
-    public static final float PLAYER_JUMP_SPEED = 200f;
+    public static final float PLAYER_JUMP_SPEED = 220f;
     public static final float PLAYER_IDLE_ANIMATION_SPEED = 0.4f;
     public static final float PLAYER_MOVE_ANIMATION_SPEED = 0.2f;
     public static final float PLAYER_FOOTSTEP_INTERVAL = 0.4f;
     // Coin constants
     public static final int COIN_VALUE = 1;
     public static final float COIN_ANIMATION_SPEED = 0.2f;
+    // Enemy constants
+    public static final float ENEMY_FLY_ANIMATION_SPEED = 0.15f;
+    public static final float ENEMY_FLY_MOVE_SPEED = 70f;
+    public static final float ENEMY_TANK_ANIMATION_SPEED = 0.1f;
+    public static final float ENEMY_TANK_MOVE_SPEED = 150f;
+    public static final float ENEMY_TANK_DEATH_TIME = 5f;   // seconds
 }

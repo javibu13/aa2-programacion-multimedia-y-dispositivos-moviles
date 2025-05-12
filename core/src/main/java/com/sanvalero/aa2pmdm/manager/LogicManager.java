@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.sanvalero.aa2pmdm.Main;
 import com.sanvalero.aa2pmdm.entity.Ally;
 import com.sanvalero.aa2pmdm.entity.Coin;
+import com.sanvalero.aa2pmdm.entity.Enemy;
 import com.sanvalero.aa2pmdm.entity.Exit;
 import com.sanvalero.aa2pmdm.entity.Item;
 import com.sanvalero.aa2pmdm.entity.Key;
@@ -26,6 +27,7 @@ public class LogicManager {
     private int level;
     public Player player;
     public Array<Item> items;
+    public Array<Enemy> enemies;
     public Exit exit;
     public TiledMapTileLayer groundLayer;
     public TiledMapTileLayer deathLayer;
@@ -95,6 +97,7 @@ public class LogicManager {
 
     public void manageCollision() {
         manageItemCollision();
+        manageEnemyCollision();
         manageExitCollision();
     }
 
@@ -148,6 +151,22 @@ public class LogicManager {
         }
     }
 
+    public void manageEnemyCollision() {
+        // Check for collisions between player and enemies
+        for (Enemy enemy : enemies) {
+            if (enemy.isActive() && player.getItemCollisionShape().overlaps(enemy.getCollisionShape())) {
+                enemy.collideWithPlayer(player);
+                System.out.println("Player collided with enemy!");
+                if (player.getHealth() <= 0) {
+                    // Player is dead
+                    System.out.println("Game Over!");
+                    // Set the game over screen
+                    game.setScreen(new GameOverScreen(game));
+                }
+            }
+        }
+    }
+
     public void manageExitCollision() {
         // Check for collisions between player and exit
         if (exit.isOpen() && player.isCollidingWithItem(exit.getCollisionShape())) {
@@ -183,6 +202,9 @@ public class LogicManager {
         // // Update items
         for (Item item : items) {
             item.update(delta);
+        }
+        for (Enemy enemy : enemies) {
+            enemy.update(delta);
         }
     }
 }
