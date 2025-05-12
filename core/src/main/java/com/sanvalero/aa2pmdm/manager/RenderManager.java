@@ -39,6 +39,7 @@ public class RenderManager {
     // UI elements - Game Over
     private Stage uiStage;
     private VisTextField nameField;
+    private GameScreen gameScreen;
 
 
     public RenderManager(LogicManager logicManager, CameraManager cameraManager, TiledMap levelMap, GameScreen gameScreen) {
@@ -55,6 +56,7 @@ public class RenderManager {
         shapeRenderer = new ShapeRenderer();
 
         // Set up the UI stage
+        this.gameScreen = gameScreen;
         uiStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(null); // Disable input for the UI stage until is shown
         VisTable table = new VisTable(true);
@@ -195,7 +197,7 @@ public class RenderManager {
 
         // Draw UI stage
         if (logicManager.imageLayer != null && logicManager.imageLayer.isVisible()) {
-            if (Gdx.input.getInputProcessor() == null || Gdx.input.getInputProcessor() != uiStage) {
+            if (!gameScreen.isPause() && (Gdx.input.getInputProcessor() == null || Gdx.input.getInputProcessor() != uiStage)) {
                 Gdx.input.setInputProcessor(uiStage);
             }
             uiStage.act(Gdx.graphics.getDeltaTime());
