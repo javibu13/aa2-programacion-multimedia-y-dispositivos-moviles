@@ -31,13 +31,14 @@ public class Constants {
     public static final int COIN_VALUE = 1;
     public static final float COIN_ANIMATION_SPEED = 0.2f;
     // Enemy constants
+    public static final float ENEMY_FLY_PLAYER_EXTRA_JUMP_SPEED = 25f;
     public static final float ENEMY_FLY_ANIMATION_SPEED = 0.15f;
     public static final float ENEMY_FLY_MOVE_SPEED = 70f;
     public static final float ENEMY_FLY_WING_INTERVAL = 0.6f;
     public static final float ENEMY_TANK_PLAYER_EXTRA_JUMP_SPEED = 80f;
     public static final float ENEMY_TANK_ANIMATION_SPEED = 0.1f;
     public static final float ENEMY_TANK_MOVE_SPEED = 150f;
-    public static final float ENEMY_TANK_DEATH_TIME = 5f;   // seconds
+    public static final float ENEMY_TANK_DEATH_TIME = 4f;   // seconds
     public static final float ENEMY_TANK_FOOTSTEP_INTERVAL = 0.1f;
     public static final float ENEMY_FISH_JUMP_SPEED = 350f;
     public static final float ENEMY_FISH_ANIMATION_SPEED = 0.1f;
