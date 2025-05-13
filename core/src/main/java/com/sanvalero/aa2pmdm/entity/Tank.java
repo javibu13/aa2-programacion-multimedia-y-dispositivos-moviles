@@ -1,5 +1,6 @@
 package com.sanvalero.aa2pmdm.entity;
 
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_PLAYER_EXTRA_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_DEATH_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_TANK_MOVE_SPEED;
@@ -111,7 +112,7 @@ public class Tank extends Enemy {
             player.playJumpSound();
             player.setGrounded(false);
             player.setJumping(true);
-            player.setVelocityY(PLAYER_JUMP_SPEED);
+            player.setVelocityY(PLAYER_JUMP_SPEED + ENEMY_TANK_PLAYER_EXTRA_JUMP_SPEED); // Extra jump speed
             isActive = false; // Deactivate tank
             R.getSound(ENEMY_TANK_DEATH_SOUND).play(Main.getSoundVolume() * 0.45f); // Play death sound
             currentFrame = R.getRegions("enemy_tank_death").get(0); // Set death sprite

@@ -34,6 +34,7 @@ public class Constants {
     public static final float ENEMY_FLY_ANIMATION_SPEED = 0.15f;
     public static final float ENEMY_FLY_MOVE_SPEED = 70f;
     public static final float ENEMY_FLY_WING_INTERVAL = 0.6f;
+    public static final float ENEMY_TANK_PLAYER_EXTRA_JUMP_SPEED = 80f;
     public static final float ENEMY_TANK_ANIMATION_SPEED = 0.1f;
     public static final float ENEMY_TANK_MOVE_SPEED = 150f;
     public static final float ENEMY_TANK_DEATH_TIME = 5f;   // seconds
