@@ -31,8 +31,8 @@ public class RenderManager {
     private CameraManager cameraManager;
     private Batch batch;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private MapLayer waterLayer;
-    private int waterLayerIndex;
+    private MapLayer foregroundLayer;
+    private int foregroundLayerIndex;
     private ShapeRenderer shapeRenderer;
     // UI elements - Game Over
     private Stage uiStage;
@@ -46,8 +46,8 @@ public class RenderManager {
         this.mapRenderer = new OrthogonalTiledMapRenderer(levelMap);
         this.batch = mapRenderer.getBatch();
 
-        this.waterLayer = levelMap.getLayers().get("water");
-        this.waterLayerIndex = levelMap.getLayers().getIndex("water");
+        this.foregroundLayer = levelMap.getLayers().get("foreground");
+        this.foregroundLayerIndex = levelMap.getLayers().getIndex("foreground");
         
         this.cameraManager = cameraManager;
 
@@ -138,9 +138,9 @@ public class RenderManager {
         }
         batch.end();
 
-        // Draw foreground layer (water)
-        if (waterLayer != null) {
-            mapRenderer.render(new int[] {waterLayerIndex});
+        // Draw foreground layer (foreground)
+        if (foregroundLayer != null) {
+            mapRenderer.render(new int[] {foregroundLayerIndex});
         }
         
         // Draw player's collision shapes for debugging 

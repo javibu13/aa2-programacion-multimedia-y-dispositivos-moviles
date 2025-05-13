@@ -2,6 +2,7 @@ package com.sanvalero.aa2pmdm.entity;
 
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_ANIMATION_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_MOVE_SPEED;
+import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_PLAYER_EXTRA_JUMP_SPEED;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_WING_SOUND;
 import static com.sanvalero.aa2pmdm.util.Constants.ENEMY_FLY_WING_INTERVAL;
 import static com.sanvalero.aa2pmdm.util.Constants.PLAYER_JUMP_SPEED;
@@ -103,7 +104,7 @@ public class Fly extends Enemy {
             player.playJumpSound();
             player.setGrounded(false);
             player.setJumping(true);
-            player.setVelocityY(PLAYER_JUMP_SPEED);
+            player.setVelocityY(PLAYER_JUMP_SPEED + ENEMY_FLY_PLAYER_EXTRA_JUMP_SPEED); // Extra jump speed
         }
     }
     

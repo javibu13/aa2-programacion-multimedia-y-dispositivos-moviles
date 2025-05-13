@@ -36,6 +36,26 @@
    <property name="ground" value=""/>
   </properties>
  </tile>
+ <tile id="12">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="13">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="14">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="15">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
  <tile id="20">
   <properties>
    <property name="ground" value=""/>
@@ -161,6 +181,21 @@
    <property name="ground" value=""/>
   </properties>
  </tile>
+ <tile id="93">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="94">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="95">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
  <tile id="100">
   <properties>
    <property name="ground" value=""/>
@@ -191,6 +226,21 @@
    <property name="type" value="exit"/>
   </properties>
  </tile>
+ <tile id="113">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="114">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="115">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
  <tile id="120">
   <properties>
    <property name="ground" value=""/>
@@ -214,6 +264,26 @@
  <tile id="130">
   <properties>
    <property name="type" value="exit"/>
+  </properties>
+ </tile>
+ <tile id="132">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="133">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="134">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="135">
+  <properties>
+   <property name="ground" value=""/>
   </properties>
  </tile>
  <tile id="140">
@@ -264,6 +334,26 @@
  <tile id="152">
   <properties>
    <property name="type" value="coin"/>
+  </properties>
+ </tile>
+ <tile id="153">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="154">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="155">
+  <properties>
+   <property name="ground" value=""/>
+  </properties>
+ </tile>
+ <tile id="156">
+  <properties>
+   <property name="ground" value=""/>
   </properties>
  </tile>
 </tileset>
