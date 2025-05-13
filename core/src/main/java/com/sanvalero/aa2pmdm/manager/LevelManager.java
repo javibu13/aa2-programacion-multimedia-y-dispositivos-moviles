@@ -77,15 +77,50 @@ public class LevelManager {
         initializeLevel();
     }
 
+    // private Array<FileHandle> getLevelFiles() {
+    //     FileHandle levelsFolder = Gdx.files.internal("levels");
+    //     System.out.println("Levels folder: " + levelsFolder.path());
+    //     FileHandle[] allFiles = levelsFolder.list();
+    //     Array<FileHandle> levelFiles = new Array<>();
+    //     for (FileHandle file : allFiles) {
+    //         System.out.println("File: " + file.path());
+    //         if (file.extension().equals("tmx")) {
+    //             levelFiles.add(file);
+    //         }
+    //     }
+    //     return levelFiles;
+    // }
+
+    /**
+     * Loads the level files from the levels folder.
+     * The level files are listed in levels.txt.
+     * This method has been redo to use the levels.txt file to load the levels because
+     * the previous method was not working properly in the .jar file build.
+     * @return Array of FileHandle objects representing the level files.
+     */
     private Array<FileHandle> getLevelFiles() {
-        FileHandle levelsFolder = Gdx.files.internal("levels" + File.separator);
-        FileHandle[] allFiles = levelsFolder.list();
         Array<FileHandle> levelFiles = new Array<>();
-        for (FileHandle file : allFiles) {
-            if (file.extension().equals("tmx")) {
-                levelFiles.add(file);
+        FileHandle levelListFile = Gdx.files.internal("levels/levels.txt");
+
+        if (!levelListFile.exists()) {
+            System.err.println("levels.txt not found!");
+            return levelFiles;
+        }
+
+        String[] lines = levelListFile.readString().split("\\r?\\n");
+        for (String line : lines) {
+            String trimmed = line.trim();
+            if (!trimmed.isEmpty()) {
+                FileHandle levelFile = Gdx.files.internal("levels/" + trimmed);
+                if (levelFile.exists()) {
+                    levelFiles.add(levelFile);
+                    System.out.println("Loaded level: " + levelFile.path());
+                } else {
+                    System.err.println("Level file not found: " + levelFile.path());
+                }
             }
         }
+
         return levelFiles;
     }
     
